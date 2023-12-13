@@ -1,4 +1,6 @@
-import { Key } from "react";
+"use client";
+
+import { Key, useEffect, useState } from "react";
 
 interface Word {
   _id: string;
@@ -18,31 +20,43 @@ interface StupidWords {
   data: Word[];
 }
 
-export default async function Words() {
-  async function getData(): Promise<StupidWords | undefined> {
+export default function Words() {
+  const [words, setWords] = useState<StupidWords>();
+
+  async function getData(): Promise<void> {
     try {
-      const res = await fetch(
-        "https://stupid-words-api.vercel.app/api/stupidwords/"
-      );
+      const queryStr = decodeURIComponent(window.location.href).split("?")[1];
+
+      // const res = queryStr
+      //   ? await fetch(`http://localhost:4000/api/stupidwords?${queryStr}`)
+      //   : await fetch("http://localhost:4000/api/stupidwords");
+
+      const res = queryStr
+        ? await fetch(
+            `stupid-words-api.vercel.app/api/stupidwords/?${queryStr}`
+          )
+        : await fetch("stupid-words-api.vercel.app/api/stupidwords");
 
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
 
-      //   await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      return res.json();
+      const data = await res.json();
+      setWords(data);
     } catch (err) {
       console.log(err);
     }
   }
 
-  const stupidWords = await getData();
+  useEffect(() => {
+    getData();
+    console.log(decodeURIComponent(window.location.href).split("?")[1]);
+  }, []);
 
   return (
     <section>
-      {stupidWords ? (
-        stupidWords.data.map((el: Word, key: Key | null | undefined) => (
+      {words?.data.length ? (
+        words.data.map((el: Word, key: Key | null | undefined) => (
           <span key={key}>{el.word}</span>
         ))
       ) : (
