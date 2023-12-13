@@ -27,15 +27,11 @@ export default function Words() {
     try {
       const queryStr = decodeURIComponent(window.location.href).split("?")[1];
 
-      // const res = queryStr
-      //   ? await fetch(`http://localhost:4000/api/stupidwords?${queryStr}`)
-      //   : await fetch("http://localhost:4000/api/stupidwords");
-
       const res = queryStr
         ? await fetch(
-            `stupid-words-api.vercel.app/api/stupidwords/?${queryStr}`
+            `https://stupid-words-api.vercel.app/api/stupidwords/?${queryStr}`
           )
-        : await fetch("stupid-words-api.vercel.app/api/stupidwords");
+        : await fetch("https://stupid-words-api.vercel.app/api/stupidwords");
 
       if (!res.ok) {
         throw new Error("Failed to fetch data");
