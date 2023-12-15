@@ -19,4 +19,5 @@ export interface StupidWords {
 export interface SearchParams {
   word?: string;
   mature?: string;
+  type?: string;
 }

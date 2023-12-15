@@ -16,6 +16,7 @@ export default function Words() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
     word: "",
     mature: "",
+    type: "",
   });
 
   async function getData(): Promise<void> {
@@ -50,6 +51,7 @@ export default function Words() {
         .get("mature")
         ?.toString(),
       word: new URL(window.location.href).searchParams.get("word")?.toString(),
+      type: new URL(window.location.href).searchParams.get("type")?.toString(),
     });
     getData();
   }, []);

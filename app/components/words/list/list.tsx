@@ -2,7 +2,7 @@ import { Key } from "react";
 
 import { StupidWords, Word } from "../interfaces";
 
-import styles from "./List.module.css";
+import styles from "./list.module.css";
 
 interface ComponentProps {
   words: StupidWords | undefined;
