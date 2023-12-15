@@ -1,0 +1,17 @@
+.words {
+  display: flex;
+  gap: 30px;
+  width: 80%;
+}
+
+@media (max-width: 1120px) {
+  .words {
+    width: 100%;
+  }
+}
+
+@media (max-width: 840px) {
+  .words {
+    flex-direction: column;
+  }
+}
