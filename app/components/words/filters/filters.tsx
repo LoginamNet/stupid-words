@@ -14,6 +14,7 @@ interface ComponentProps {
   url: URL | undefined;
   searchParams: SearchParams;
   setSearchParams: Dispatch<SetStateAction<SearchParams>>;
+  setSearch(): void;
   getData(): Promise<void>;
 }
 
@@ -24,39 +25,6 @@ export default function Filters(props: ComponentProps) {
     "exp",
     "adj",
   ]);
-
-  function setSearch(url: URL | undefined, searchParams?: SearchParams) {
-    if (url) {
-      if (searchParams) {
-        searchParams.mature
-          ? url.searchParams.set("mature", searchParams?.mature)
-          : url.searchParams.delete("mature");
-
-        searchParams.word
-          ? url.searchParams.set("word", searchParams?.word)
-          : url.searchParams.delete("word");
-
-        searchParams.type
-          ? url.searchParams.set("type", searchParams?.type)
-          : url.searchParams.delete("type");
-
-        searchParams.type &&
-          searchParams.type?.split("-").length === 4 &&
-          url.searchParams.delete("type");
-
-        url.searchParams.size
-          ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
-          : history.replaceState({}, "", "/");
-      }
-    }
-  }
-
-  const handleWordInput = (e: ChangeEvent<HTMLInputElement>) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      word: e.currentTarget.value,
-    });
-  };
 
   const handleRadioInput = (e: ChangeEvent<HTMLInputElement>) => {
     props.setSearchParams({
@@ -92,16 +60,6 @@ export default function Filters(props: ComponentProps) {
 
   return (
     <aside className={styles.filters}>
-      <label>
-        Словцо:
-        <input
-          type="text"
-          name="word-input"
-          value={props.searchParams.word ? props.searchParams.word : ""}
-          id="word-input"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => handleWordInput(e)}
-        ></input>
-      </label>
       <fieldset className={styles.fieldset}>
         <legend>Используем крепкие выражения?</legend>
         <label>
@@ -198,7 +156,7 @@ export default function Filters(props: ComponentProps) {
         type="button"
         value="СЕГОДНЯ МЫ С ТОБОЙ ФИЛЬТРУЕМ"
         onClick={() => {
-          setSearch(props.url, props.searchParams);
+          props.setSearch();
           props.getData();
         }}
       ></input>

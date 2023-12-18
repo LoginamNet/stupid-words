@@ -4,6 +4,14 @@
   width: 80%;
 }
 
+.wordsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 70%;
+  min-width: 70%;
+}
+
 @media (max-width: 1120px) {
   .words {
     width: 100%;
@@ -13,5 +21,10 @@
 @media (max-width: 840px) {
   .words {
     flex-direction: column;
+  }
+
+  .wordsList {
+    width: 100%;
+    min-width: 100%;
   }
 }
