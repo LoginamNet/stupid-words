@@ -2,18 +2,19 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { SearchParams, StupidWords } from "./interfaces";
-
 import List from "./list/list";
 import TopBar from "./top-bar/top-bar";
 import Filters from "./filters/filters";
 
+import { SearchParams, StupidWords } from "./interfaces";
+
 import styles from "./words.module.css";
 
 export default function Words() {
+  // const url = useMemo(() => new URL(window.location.href), []);
+  const [url, setUrl] = useState<URL>();
   const [isLoading, setIsLoading] = useState(false);
   const [words, setWords] = useState<StupidWords>();
-  const [url, setUrl] = useState<URL | undefined>();
   const [searchParams, setSearchParams] = useState<SearchParams>({
     word: "",
     mature: "",
@@ -106,7 +107,6 @@ export default function Words() {
   return (
     <section className={styles.words}>
       <Filters
-        url={url}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
         setSearch={setSearch}
@@ -114,7 +114,6 @@ export default function Words() {
       />
       <div className={styles.wordsList}>
         <TopBar
-          url={url}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
           setWord={setWord}
