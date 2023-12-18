@@ -11,7 +11,6 @@ import { SearchParams, StupidWords } from "./interfaces";
 import styles from "./words.module.css";
 
 export default function Words() {
-  // const url = useMemo(() => new URL(window.location.href), []);
   const [url, setUrl] = useState<URL>();
   const [isLoading, setIsLoading] = useState(false);
   const [words, setWords] = useState<StupidWords>();

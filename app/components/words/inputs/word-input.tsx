@@ -1,4 +1,10 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 import { SearchParams } from "../interfaces";
 
@@ -11,15 +17,26 @@ interface ComponentProps {
 
 export default function WordInput(props: ComponentProps) {
   const { setWord, getData } = props;
+  const [wordInputValue, setWordInputValue] = useState(props.searchParams.word);
 
   const handleWordInput = (e: ChangeEvent<HTMLInputElement>) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      word: e.currentTarget.value,
-    });
+    setWordInputValue(e.currentTarget.value);
   };
 
   useEffect(() => {
+    const debounce = setTimeout(() => {
+      props.setSearchParams({
+        ...props.searchParams,
+        word: wordInputValue,
+      });
+    }, 700);
+    return () => {
+      clearTimeout(debounce);
+    };
+  }, [props, wordInputValue]);
+
+  useEffect(() => {
+    setWordInputValue(props.searchParams.word);
     setWord();
     getData();
   }, [getData, props.searchParams.word, setWord]);
@@ -30,7 +47,7 @@ export default function WordInput(props: ComponentProps) {
       <input
         type="text"
         name="word-input"
-        value={props.searchParams.word ? props.searchParams.word : ""}
+        value={wordInputValue}
         id="word-input"
         onChange={(e: ChangeEvent<HTMLInputElement>) => handleWordInput(e)}
       ></input>
