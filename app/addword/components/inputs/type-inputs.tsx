@@ -8,8 +8,8 @@ interface ComponentProps {
 
 export default function TypeInputs(props: ComponentProps) {
   const types = [
-    { text: "Существительное", type: "verb", id: "verb" },
-    { text: "Глагол", type: "noun", id: "noun" },
+    { text: "Существительное", type: "noun", id: "noun" },
+    { text: "Глагол", type: "verb", id: "verb" },
     { text: "Выражение", type: "exp", id: "exp" },
     { text: "Прилагательное", type: "adj", id: "adj" },
   ];

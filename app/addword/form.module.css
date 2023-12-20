@@ -1,0 +1,37 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: fit-content;
+  padding: 30px;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+}
+
+.form input[type="text"] {
+  padding: 10px;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+}
+
+.form fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 10px 20px;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+}
+
+.form textarea {
+  width: 100%;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+  resize: vertical;
+}
+
+.form_input__vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

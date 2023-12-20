@@ -37,6 +37,9 @@ a {
   text-decoration: none;
 }
 
-input[type="button"] {
+input[type="button"],
+input[type="submit"] {
+  width: 100%;
   padding: 5px;
+  border-radius: 10px;
 }

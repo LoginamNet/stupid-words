@@ -9,6 +9,8 @@ import TextInput from "../inputs/text-input";
 
 import { AddFormInputs } from "../../interfaces";
 
+import styles from "../../form.module.css";
+
 export default function AddWordForm() {
   const { register, handleSubmit } = useForm<AddFormInputs>();
 
@@ -45,12 +47,12 @@ export default function AddWordForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <WordInput register={register} />
       <MatureInputs register={register} />
       <TypeInputs register={register} />
       <TextInput register={register} />
-      <input type="submit" />
+      <input type="submit" value="ОТПРАВЛЯЕМ!" />
     </form>
   );
 }

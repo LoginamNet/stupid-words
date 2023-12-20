@@ -111,7 +111,7 @@ export default function Words() {
         setSearch={setSearch}
         getData={getData}
       />
-      <div className={styles.wordsList}>
+      <div className={styles.words_list}>
         <TopBar
           searchParams={searchParams}
           setSearchParams={setSearchParams}

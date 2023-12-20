@@ -16,7 +16,7 @@ interface ComponentProps {
 }
 
 export default function TypeInputs(props: ComponentProps) {
-  const initialTypes = ["verb", "noun", "exp", "adj"];
+  const initialTypes = ["noun", "verb", "exp", "adj"];
   const initialTypesNames = [
     "существительные",
     "глаголы",
