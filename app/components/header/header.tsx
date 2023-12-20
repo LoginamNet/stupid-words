@@ -1,10 +1,13 @@
 import Link from "next/link";
 
+import styles from "./header.module.css";
+
 export default function Header() {
   return (
-    <header>
-      <Link href="/welcome">Welcome</Link>
-      <Link href="/">Words</Link>
+    <header className={styles.header}>
+      <Link href="/welcome">Привет</Link>
+      <Link href="/">Словечки</Link>
+      <Link href="/addword">Добавить слово</Link>
     </header>
   );
 }

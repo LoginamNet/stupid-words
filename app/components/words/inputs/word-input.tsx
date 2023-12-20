@@ -47,7 +47,7 @@ export default function WordInput(props: ComponentProps) {
       <input
         type="text"
         name="word-input"
-        value={wordInputValue}
+        value={wordInputValue ? wordInputValue : ""}
         id="word-input"
         onChange={(e: ChangeEvent<HTMLInputElement>) => handleWordInput(e)}
       ></input>
