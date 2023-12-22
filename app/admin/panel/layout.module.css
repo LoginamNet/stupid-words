@@ -1,0 +1,20 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main {
+  display: flex;
+  gap: 10px;
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

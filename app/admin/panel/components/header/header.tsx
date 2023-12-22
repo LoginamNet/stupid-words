@@ -5,9 +5,7 @@ import styles from "./header.module.css";
 export default async function Header() {
   return (
     <header className={styles.header}>
-      <Link href="/welcome">Привет</Link>
       <Link href="/">Словечки</Link>
-      <Link href="/addword">Добавить слово</Link>
     </header>
   );
 }
