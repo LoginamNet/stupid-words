@@ -1,4 +1,4 @@
-import { MainLayout } from "./layout";
+import MainLayout from "./main-layout";
 import Words from "./components/words/words";
 
 export default async function Home() {
