@@ -1,0 +1,76 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+
+import List from "./list/list";
+import TopBar from "./top-bar/top-bar";
+import Filters from "./filters/filters";
+
+import { setSearchQuery } from "./ulits";
+
+import { SearchParams, StupidWords } from "./interfaces";
+
+import styles from "./words.module.css";
+
+export default function Words() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [words, setWords] = useState<StupidWords>();
+  const [wordSearch, setWordSearch] = useState("");
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    word: "",
+    mature: "",
+    type: "",
+    sort: "",
+  });
+  const [queryString, setQueryString] = useState("");
+
+  const handleQuery = () => {
+    setQueryString(setSearchQuery(searchParams));
+  };
+
+  const getData = useCallback(async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const res = queryString
+        ? await fetch(
+            `https://stupid-words-api.vercel.app/api/stupidwords?${queryString}`
+          )
+        : await fetch("https://stupid-words-api.vercel.app/api/stupidwords");
+
+      if (!res.ok) {
+        setIsLoading(false);
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await res.json();
+
+      setWords(data);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }, [queryString]);
+
+  useEffect(() => {
+    getData();
+  }, [getData, queryString]);
+
+  return (
+    <section className={styles.words}>
+      <Filters
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        handleQuery={handleQuery}
+      />
+      <div className={styles.words_list}>
+        <TopBar
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          handleQuery={handleQuery}
+        />
+        <List words={words} isLoading={isLoading} />
+      </div>
+    </section>
+  );
+}

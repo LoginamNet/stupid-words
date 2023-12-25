@@ -1,3 +1,5 @@
+import Words from "../components/words/words";
+
 export default async function AdminPanel() {
-  return <h1>Текущий словарь</h1>;
+  return <Words />;
 }

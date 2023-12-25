@@ -1,0 +1,19 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: fit-content;
+  padding: 10px;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+}
+
+.fieldset {
+  padding: 10px;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+}
+
+.fieldset input[type="button"] {
+  margin-top: 10px;
+}
