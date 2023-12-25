@@ -6,16 +6,19 @@ import List from "./list/list";
 import TopBar from "./top-bar/top-bar";
 import Filters from "./filters/filters";
 
-import { setSearchQuery } from "./ulits";
+import { createSearchQuery } from "./ulits";
 
 import { SearchParams, StupidWords } from "./interfaces";
 
 import styles from "./words.module.css";
 
-export default function Words() {
+interface ComponentProps {
+  APIEndPoint: string;
+}
+
+export default function Words(props: ComponentProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [words, setWords] = useState<StupidWords>();
-  const [wordSearch, setWordSearch] = useState("");
   const [searchParams, setSearchParams] = useState<SearchParams>({
     word: "",
     mature: "",
@@ -25,7 +28,7 @@ export default function Words() {
   const [queryString, setQueryString] = useState("");
 
   const handleQuery = () => {
-    setQueryString(setSearchQuery(searchParams));
+    setQueryString(createSearchQuery(searchParams));
   };
 
   const getData = useCallback(async (): Promise<void> => {
@@ -34,9 +37,11 @@ export default function Words() {
 
       const res = queryString
         ? await fetch(
-            `https://stupid-words-api.vercel.app/api/stupidwords?${queryString}`
+            `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}?${queryString}`
           )
-        : await fetch("https://stupid-words-api.vercel.app/api/stupidwords");
+        : await fetch(
+            `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}`
+          );
 
       if (!res.ok) {
         setIsLoading(false);
@@ -50,14 +55,14 @@ export default function Words() {
     } catch (err) {
       console.log(err);
     }
-  }, [queryString]);
+  }, [props.APIEndPoint, queryString]);
 
   useEffect(() => {
     getData();
   }, [getData, queryString]);
 
   return (
-    <section className={styles.words}>
+    <div className={styles.words}>
       <Filters
         searchParams={searchParams}
         setSearchParams={setSearchParams}
@@ -71,6 +76,6 @@ export default function Words() {
         />
         <List words={words} isLoading={isLoading} />
       </div>
-    </section>
+    </div>
   );
 }

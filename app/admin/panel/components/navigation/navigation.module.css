@@ -3,6 +3,6 @@
   flex-direction: column;
   min-width: fit-content;
   height: 100%;
-  border: 1px solid gainsboro;
+  border-right: 1px solid gainsboro;
   border-radius: 5px;
 }

@@ -26,7 +26,7 @@ export default function Filters(props: ComponentProps) {
       />
       <input
         type="button"
-        value="СЕГОДНЯ МЫ С ТОБОЙ ФИЛЬТРУЕМ"
+        value="Применить фильтры"
         onClick={() => {
           props.handleQuery();
         }}

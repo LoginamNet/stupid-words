@@ -19,7 +19,7 @@ export default function AddWordForm() {
       //   setIsLoading(true);
 
       const res = await fetch(
-        "https://stupid-words-api.vercel.app/api/stupidwords",
+        "https://stupid-words-api.vercel.app/api/offerdwords",
         {
           method: "POST",
           body: JSON.stringify(submitData),

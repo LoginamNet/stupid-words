@@ -4,6 +4,5 @@
   flex-wrap: wrap;
   gap: 20px;
   padding: 10px;
-  border: 1px solid gainsboro;
-  border-radius: 10px;
+  border-bottom: 1px solid gainsboro;
 }

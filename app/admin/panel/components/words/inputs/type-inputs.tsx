@@ -51,7 +51,7 @@ export default function TypeInputs(props: ComponentProps) {
 
   return (
     <fieldset className={styles.fieldset}>
-      <legend>Типы</legend>
+      <legend>Тип выражений:</legend>
       {initialTypes.map((type, i) => (
         <label key={i}>
           <input
@@ -68,7 +68,7 @@ export default function TypeInputs(props: ComponentProps) {
       ))}
       <input
         type="button"
-        value="ВСЕ ВЕЗДЕ И СРАЗУ"
+        value="Все типы"
         onClick={() => handleCheckboxAllInput()}
       ></input>
     </fieldset>

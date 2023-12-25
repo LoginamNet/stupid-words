@@ -16,6 +16,7 @@ interface ComponentProps {
 
 export default function WordInput(props: ComponentProps) {
   const { handleQuery } = props;
+  const [currentWord, setCurrentWord] = useState<string | undefined>("");
   const [wordInputValue, setWordInputValue] = useState("");
 
   const handleWordInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,16 +36,19 @@ export default function WordInput(props: ComponentProps) {
   }, [props, wordInputValue]);
 
   useEffect(() => {
-    handleQuery();
-  }, [props.searchParams.word]);
+    if (currentWord !== props.searchParams.word) {
+      setCurrentWord(props.searchParams.word);
+      handleQuery();
+    }
+  }, [currentWord, props.searchParams.word, handleQuery]);
 
   return (
     <label>
-      Словцо:
       <input
         type="text"
         name="word-input"
         value={wordInputValue ? wordInputValue : ""}
+        placeholder="Введите слово для поиска"
         id="word-input"
         onChange={(e: ChangeEvent<HTMLInputElement>) => handleWordInput(e)}
       ></input>

@@ -24,6 +24,7 @@ export default function TopBar(props: ComponentProps) {
       <SortInputs
         searchParams={props.searchParams}
         setSearchParams={props.setSearchParams}
+        handleQuery={props.handleQuery}
       />
     </div>
   );

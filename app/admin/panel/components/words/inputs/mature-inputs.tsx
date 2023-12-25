@@ -11,9 +11,9 @@ interface ComponentProps {
 
 export default function MatureInputs(props: ComponentProps) {
   const matureTypes = [
-    { text: "Выражаюсь словами поэтов", type: "false", id: "false" },
-    { text: "В роду были сапожники", type: "true", id: "true" },
-    { text: "Я готов увидеть всё", type: "", id: "all" },
+    { text: "Только 18+", type: "false", id: "false" },
+    { text: "Только цензурные", type: "true", id: "true" },
+    { text: "Всё", type: "", id: "all" },
   ];
 
   const handleRadioInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +25,7 @@ export default function MatureInputs(props: ComponentProps) {
 
   return (
     <fieldset className={styles.fieldset}>
-      <legend>Используем крепкие выражения?</legend>
+      <legend>Взрослый контент:</legend>
       {matureTypes.map((el, key) => (
         <label key={key}>
           <input
