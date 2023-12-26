@@ -11,8 +11,8 @@ interface ComponentProps {
 
 export default function MatureInputs(props: ComponentProps) {
   const matureTypes = [
-    { text: "Только 18+", type: "false", id: "false" },
-    { text: "Только цензурные", type: "true", id: "true" },
+    { text: "Только цензурные", type: "false", id: "false" },
+    { text: "Только 18+", type: "true", id: "true" },
     { text: "Всё", type: "", id: "all" },
   ];
 

@@ -74,7 +74,11 @@ export default function Words(props: ComponentProps) {
           setSearchParams={setSearchParams}
           handleQuery={handleQuery}
         />
-        <List words={words} isLoading={isLoading} />
+        <List
+          APIEndPoint={props.APIEndPoint}
+          words={words}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );
