@@ -4,24 +4,23 @@ interface ComponentProps {
   getData: () => Promise<void>;
 }
 
-export default function DeleteButton(props: ComponentProps) {
+export default function SendToActualButton(props: ComponentProps) {
   const deleteWord = async (APIEndPoint: string, id: string): Promise<void> => {
     try {
       const res = await fetch(
-        `https://stupid-words-api.vercel.app/api/${APIEndPoint}/${id}`,
+        `https://stupid-words-api.vercel.app/api/${APIEndPoint}/${id}/send`,
         {
-          method: "DELETE",
+          method: "POST",
         }
       );
 
       if (res.ok) {
-        console.log("Word was removed from DB");
+        console.log("Word was added to actual words list");
         props.getData();
       } else {
-        res.status === 409;
         if (res.status === 409) {
           console.log(
-            "Word was allready deleted from offered words. Please, update offered words list"
+            "Word was allready added to main DB or deleted from offered words. Please, update offered words list"
           );
           props.getData();
         } else {
@@ -37,10 +36,9 @@ export default function DeleteButton(props: ComponentProps) {
     <button
       onClick={() => {
         deleteWord(props.APIEndPoint, props.id);
-        console.log(props.id);
       }}
     >
-      удалить
+      добавить в словарь
     </button>
   );
 }

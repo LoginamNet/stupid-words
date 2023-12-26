@@ -29,6 +29,8 @@ export default function AddWordForm() {
         }
       );
 
+      console.log(res.status);
+
       if (res.ok) {
         console.log("Yeai!");
       } else {

@@ -10,6 +10,7 @@ interface ComponentProps {
   APIEndPoint: string;
   words: StupidWords | undefined;
   isLoading: boolean;
+  getData: () => Promise<void>;
 }
 
 export default function List(props: ComponentProps) {
@@ -19,7 +20,12 @@ export default function List(props: ComponentProps) {
         <p>Грузим словечки...</p>
       ) : props.words?.data.length ? (
         props.words.data.map((el: Word, key: Key) => (
-          <WordCard key={key} APIEndPoint={props.APIEndPoint} word={el} />
+          <WordCard
+            key={key}
+            APIEndPoint={props.APIEndPoint}
+            word={el}
+            getData={props.getData}
+          />
         ))
       ) : (
         <p>К сожалению (или нет), такого слова не существует</p>

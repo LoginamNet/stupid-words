@@ -78,6 +78,7 @@ export default function Words(props: ComponentProps) {
           APIEndPoint={props.APIEndPoint}
           words={words}
           isLoading={isLoading}
+          getData={getData}
         />
       </div>
     </div>
