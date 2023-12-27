@@ -1,10 +1,14 @@
+import { useState } from "react";
+
+import DeleteButton from "../buttons/delete-button";
+import SendToActualButton from "../buttons/to-actual_button";
+import ChangeWordForm from "../change-form/change-form";
+
 import { setWordType } from "../ulits";
 
 import { Word } from "../interfaces";
 
 import styles from "./word.module.css";
-import DeleteButton from "../buttons/delete-button";
-import SendToActualButton from "../buttons/to-actual_button";
 
 interface ComponentProps {
   APIEndPoint: string;
@@ -13,34 +17,67 @@ interface ComponentProps {
 }
 
 export default function WordCard(props: ComponentProps) {
+  const [word, setWord] = useState(props.word);
+  const [inChangeMod, setInChangeMod] = useState(false);
+
+  const getWordData = async (): Promise<void> => {
+    try {
+      const res = await fetch(
+        `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${props.word._id}`
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const resObject = await res.json();
+
+      setWord(resObject.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
-      <div className={styles.horizontal_block}>
-        <h4>{props.word.word}</h4>
-        <div className={styles.horizontal_block}>
-          <span>{props.word.mature === "true" ? "18+" : "0+"}</span>
-          <span>{setWordType(props.word.type)}</span>
+      {!inChangeMod ? (
+        <div>
+          <div className={styles.horizontal_block}>
+            <h4>{word.word}</h4>
+            <div className={styles.horizontal_block}>
+              <span>{word.mature === "true" ? "18+" : "0+"}</span>
+              <span>{setWordType(word.type)}</span>
+            </div>
+          </div>
+          <span>[{word._id}]</span>
+          <p>{word.text}</p>
+          {props.APIEndPoint === "stupidwords" && (
+            <span>Отметок нравится: {word.likes}</span>
+          )}
+          <div className={styles.horizontal_block}>
+            <DeleteButton
+              APIEndPoint={props.APIEndPoint}
+              id={word._id}
+              getData={props.getData}
+            />
+            {props.APIEndPoint === "offeredwords" && (
+              <SendToActualButton
+                APIEndPoint={props.APIEndPoint}
+                id={word._id}
+                getData={props.getData}
+              />
+            )}
+            <button onClick={() => setInChangeMod(true)}>изменить</button>
+          </div>
         </div>
-      </div>
-      <span>[{props.word._id}]</span>
-      <p>{props.word.text}</p>
-      {props.APIEndPoint === "stupidwords" && (
-        <span>Отметок нравится: {props.word.likes}</span>
-      )}
-      <div className={styles.horizontal_block}>
-        <DeleteButton
+      ) : (
+        <ChangeWordForm
           APIEndPoint={props.APIEndPoint}
-          id={props.word._id}
-          getData={props.getData}
+          word={word}
+          getWordData={getWordData}
+          setInChangeMod={setInChangeMod}
         />
-        {props.APIEndPoint === "offeredwords" && (
-          <SendToActualButton
-            APIEndPoint={props.APIEndPoint}
-            id={props.word._id}
-            getData={props.getData}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 }

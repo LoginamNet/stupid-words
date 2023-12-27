@@ -1,0 +1,14 @@
+.form_box {
+  border: 1px solid sandybrown;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.horizontal_block {
+  display: flex;
+  gap: 10px;
+}
