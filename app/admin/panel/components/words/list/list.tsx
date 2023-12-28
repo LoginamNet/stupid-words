@@ -1,4 +1,4 @@
-import { Key } from "react";
+import { Key, useState } from "react";
 
 import WordCard from "../word/word";
 
@@ -14,6 +14,8 @@ interface ComponentProps {
 }
 
 export default function List(props: ComponentProps) {
+  const [wordToChangeID, setWordToChangeID] = useState("");
+
   return (
     <div className={styles.list}>
       {!props.words || props.isLoading ? (
@@ -24,6 +26,8 @@ export default function List(props: ComponentProps) {
             key={key}
             APIEndPoint={props.APIEndPoint}
             word={el}
+            wordToChangeID={wordToChangeID}
+            setWordToChangeID={setWordToChangeID}
             getData={props.getData}
           />
         ))

@@ -5,7 +5,10 @@ interface ComponentProps {
 }
 
 export default function SendToActualButton(props: ComponentProps) {
-  const deleteWord = async (APIEndPoint: string, id: string): Promise<void> => {
+  const sendToActualWords = async (
+    APIEndPoint: string,
+    id: string
+  ): Promise<void> => {
     try {
       const res = await fetch(
         `https://stupid-words-api.vercel.app/api/${APIEndPoint}/${id}/send`,
@@ -35,7 +38,7 @@ export default function SendToActualButton(props: ComponentProps) {
   return (
     <button
       onClick={() => {
-        deleteWord(props.APIEndPoint, props.id);
+        sendToActualWords(props.APIEndPoint, props.id);
       }}
     >
       добавить в словарь

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import DeleteButton from "../buttons/delete-button";
 import SendToActualButton from "../buttons/to-actual_button";
@@ -13,12 +13,20 @@ import styles from "./word.module.css";
 interface ComponentProps {
   APIEndPoint: string;
   word: Word;
+  wordToChangeID: string;
+  setWordToChangeID: Dispatch<SetStateAction<string>>;
   getData: () => Promise<void>;
 }
 
 export default function WordCard(props: ComponentProps) {
   const [word, setWord] = useState(props.word);
   const [inChangeMod, setInChangeMod] = useState(false);
+
+  useEffect(() => {
+    props.wordToChangeID === word._id
+      ? setInChangeMod(true)
+      : setInChangeMod(false);
+  }, [props.wordToChangeID, word._id]);
 
   const getWordData = async (): Promise<void> => {
     try {
@@ -67,7 +75,9 @@ export default function WordCard(props: ComponentProps) {
                 getData={props.getData}
               />
             )}
-            <button onClick={() => setInChangeMod(true)}>изменить</button>
+            <button onClick={() => props.setWordToChangeID(word._id)}>
+              изменить
+            </button>
           </div>
         </div>
       ) : (
@@ -75,7 +85,7 @@ export default function WordCard(props: ComponentProps) {
           APIEndPoint={props.APIEndPoint}
           word={word}
           getWordData={getWordData}
-          setInChangeMod={setInChangeMod}
+          setWordToChangeID={props.setWordToChangeID}
         />
       )}
     </div>

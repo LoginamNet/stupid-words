@@ -1,4 +1,4 @@
-import { SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import WordInput from "./inputs/word-input";
@@ -16,7 +16,7 @@ interface ComponentProps {
   APIEndPoint: string;
   word: Word;
   getWordData: () => Promise<void>;
-  setInChangeMod: (value: SetStateAction<boolean>) => void;
+  setWordToChangeID: Dispatch<SetStateAction<string>>;
 }
 
 export default function ChangeWordForm(props: ComponentProps) {
@@ -40,7 +40,7 @@ export default function ChangeWordForm(props: ComponentProps) {
       if (res.ok) {
         console.log("Yeai!");
         await props.getWordData();
-        props.setInChangeMod(false);
+        props.setWordToChangeID("");
       } else {
         res.status === 409
           ? console.log(
@@ -71,7 +71,7 @@ export default function ChangeWordForm(props: ComponentProps) {
         </div>
         <button type="submit">изменить</button>
       </form>
-      <button onClick={() => props.setInChangeMod(false)}>отмена</button>
+      <button onClick={() => props.setWordToChangeID("")}>отмена</button>
     </div>
   );
 }
