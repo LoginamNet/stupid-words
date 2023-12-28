@@ -22,16 +22,60 @@ export default function WordCard(props: ComponentProps) {
   const [word, setWord] = useState(props.word);
   const [inChangeMod, setInChangeMod] = useState(false);
 
-  useEffect(() => {
-    props.wordToChangeID === word._id
-      ? setInChangeMod(true)
-      : setInChangeMod(false);
-  }, [props.wordToChangeID, word._id]);
+  const deleteWord = async (): Promise<void> => {
+    try {
+      const res = await fetch(
+        `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${word._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (res.ok) {
+        console.log("Word was removed from DB");
+        props.getData();
+      } else {
+        if (res.status === 409) {
+          console.log("Word was allready deleted. Please, update words list");
+        } else {
+          console.log("Oops! Something is wrong.");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const sendToActualWords = async (): Promise<void> => {
+    try {
+      const res = await fetch(
+        `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${word._id}/send`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (res.ok) {
+        console.log("Word was added to actual words list");
+        deleteWord();
+      } else {
+        if (res.status === 409) {
+          console.log(
+            "Word was allready added to main DB or deleted from offered words. Please, update offered words list"
+          );
+        } else {
+          console.log("Oops! Something is wrong.");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const getWordData = async (): Promise<void> => {
     try {
       const res = await fetch(
-        `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${props.word._id}`
+        `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${word._id}`
       );
 
       if (!res.ok) {
@@ -46,6 +90,12 @@ export default function WordCard(props: ComponentProps) {
     }
   };
 
+  useEffect(() => {
+    props.wordToChangeID === word._id
+      ? setInChangeMod(true)
+      : setInChangeMod(false);
+  }, [props.wordToChangeID, word._id]);
+
   return (
     <div>
       {!inChangeMod ? (
@@ -56,6 +106,10 @@ export default function WordCard(props: ComponentProps) {
               <span>{word.mature === "true" ? "18+" : "0+"}</span>
               <span>{setWordType(word.type)}</span>
             </div>
+            <div className={styles.horizontal_block}>
+              <span>Создано: {word.createdAt}</span>
+              <span>Изменено: {word.updatedAt}</span>
+            </div>
           </div>
           <span>[{word._id}]</span>
           <p>{word.text}</p>
@@ -63,17 +117,9 @@ export default function WordCard(props: ComponentProps) {
             <span>Отметок нравится: {word.likes}</span>
           )}
           <div className={styles.horizontal_block}>
-            <DeleteButton
-              APIEndPoint={props.APIEndPoint}
-              id={word._id}
-              getData={props.getData}
-            />
+            <DeleteButton deleteWord={deleteWord} />
             {props.APIEndPoint === "offeredwords" && (
-              <SendToActualButton
-                APIEndPoint={props.APIEndPoint}
-                id={word._id}
-                getData={props.getData}
-              />
+              <SendToActualButton sendToActualWords={sendToActualWords} />
             )}
             <button onClick={() => props.setWordToChangeID(word._id)}>
               изменить

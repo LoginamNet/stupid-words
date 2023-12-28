@@ -15,7 +15,7 @@ export default function MatureInputs(props: ComponentProps) {
 
   return (
     <fieldset>
-      <legend>Можно детям?</legend>
+      <legend>18+:</legend>
       {matureTypes.map((el, key) => (
         <label key={key}>
           <input

@@ -6,11 +6,13 @@ import SortInputs from "../inputs/sort-inputs";
 import { SearchParams } from "../interfaces";
 
 import styles from "./top-bar.module.css";
+import UpdateButton from "../buttons/update-button";
 
 interface ComponentProps {
   searchParams: SearchParams;
   setSearchParams: Dispatch<SetStateAction<SearchParams>>;
   handleQuery: () => void;
+  getData: () => Promise<void>;
 }
 
 export default function TopBar(props: ComponentProps) {
@@ -26,6 +28,7 @@ export default function TopBar(props: ComponentProps) {
         setSearchParams={props.setSearchParams}
         handleQuery={props.handleQuery}
       />
+      <UpdateButton getData={props.getData} />
     </div>
   );
 }

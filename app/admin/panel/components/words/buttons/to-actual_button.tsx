@@ -1,44 +1,12 @@
 interface ComponentProps {
-  APIEndPoint: string;
-  id: string;
-  getData: () => Promise<void>;
+  sendToActualWords: () => Promise<void>;
 }
 
 export default function SendToActualButton(props: ComponentProps) {
-  const sendToActualWords = async (
-    APIEndPoint: string,
-    id: string
-  ): Promise<void> => {
-    try {
-      const res = await fetch(
-        `https://stupid-words-api.vercel.app/api/${APIEndPoint}/${id}/send`,
-        {
-          method: "POST",
-        }
-      );
-
-      if (res.ok) {
-        console.log("Word was added to actual words list");
-        props.getData();
-      } else {
-        if (res.status === 409) {
-          console.log(
-            "Word was allready added to main DB or deleted from offered words. Please, update offered words list"
-          );
-          props.getData();
-        } else {
-          console.log("Oops! Something is wrong.");
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <button
       onClick={() => {
-        sendToActualWords(props.APIEndPoint, props.id);
+        props.sendToActualWords();
       }}
     >
       добавить в словарь

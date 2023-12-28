@@ -73,6 +73,7 @@ export default function Words(props: ComponentProps) {
           searchParams={searchParams}
           setSearchParams={setSearchParams}
           handleQuery={handleQuery}
+          getData={getData}
         />
         <List
           APIEndPoint={props.APIEndPoint}
