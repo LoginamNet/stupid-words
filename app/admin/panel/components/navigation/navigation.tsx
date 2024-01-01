@@ -6,6 +6,8 @@ export default async function Navigation() {
   const links = [
     { link: "actual", name: "Словарь" },
     { link: "offered", name: "Предложения" },
+    { link: "addactual", name: "Добавить в словарь" },
+    { link: "addoffered", name: "Добавить в предложенные" },
   ];
 
   return (
