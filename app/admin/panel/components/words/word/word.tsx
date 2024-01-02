@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import DeleteButton from "../buttons/delete-button";
 import SendToActualButton from "../buttons/to-actual_button";
@@ -23,6 +24,8 @@ export default function WordCard(props: ComponentProps) {
   const [inChangeMod, setInChangeMod] = useState(false);
 
   const deleteWord = async (): Promise<void> => {
+    const toastDelID = toast.loading("Удаление..");
+
     try {
       const res = await fetch(
         `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${word._id}`,
@@ -32,21 +35,46 @@ export default function WordCard(props: ComponentProps) {
       );
 
       if (res.ok) {
-        console.log("Word was removed from DB");
+        toast.update(toastDelID, {
+          render: "Слово было успешно удалено!",
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+
         props.getData();
       } else {
         if (res.status === 409) {
-          console.log("Word was allready deleted. Please, update words list");
+          toast.update(toastDelID, {
+            render: "Слово уже было удалено! Пожалуйсита, обновите список!",
+            type: "warning",
+            isLoading: false,
+            autoClose: 5000,
+          });
         } else {
-          console.log("Oops! Something is wrong.");
+          toast.update(toastDelID, {
+            render: "Что-то пошло не так! Повторите попытку",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          });
         }
       }
     } catch (err) {
       console.log(err);
+
+      toast.update(toastDelID, {
+        render: "Что-то пошло не так! Повторите попытку",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
     }
   };
 
   const sendToActualWords = async (): Promise<void> => {
+    const toastSendID = toast.loading("Переносим в акиуальный словарь..");
+
     try {
       const res = await fetch(
         `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${word._id}/send`,
@@ -56,37 +84,80 @@ export default function WordCard(props: ComponentProps) {
       );
 
       if (res.ok) {
-        console.log("Word was added to actual words list");
+        toast.update(toastSendID, {
+          render: "Перенос успешен!",
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+
         deleteWord();
       } else {
         if (res.status === 409) {
-          console.log(
-            "Word was allready added to main DB or deleted from offered words. Please, update offered words list"
-          );
+          toast.update(toastSendID, {
+            render:
+              "Перенос уже был осуществлен или слово было удалено из предложенных! Обновите список!",
+            type: "warning",
+            isLoading: false,
+            autoClose: 5000,
+          });
         } else {
-          console.log("Oops! Something is wrong.");
+          toast.update(toastSendID, {
+            render: "Что-то пошло не так! Повторите попытку",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          });
         }
       }
     } catch (err) {
       console.log(err);
+
+      toast.update(toastSendID, {
+        render: "Что-то пошло не так! Повторите попытку",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
     }
   };
 
   const getWordData = async (): Promise<void> => {
+    const toastUpdateID = toast.loading("Обновляем слово..");
+
     try {
       const res = await fetch(
         `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${word._id}`
       );
 
       if (!res.ok) {
-        throw new Error("Failed to fetch data");
+        toast.update(toastUpdateID, {
+          render: "Что-то пошло не так! Повторите попытку",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
       }
 
       const resObject = await res.json();
 
       setWord(resObject.data);
+
+      toast.update(toastUpdateID, {
+        render: "Слово обновлено!",
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
     } catch (err) {
       console.log(err);
+
+      toast.update(toastUpdateID, {
+        render: "Что-то пошло не так! Повторите попытку",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
     }
   };
 

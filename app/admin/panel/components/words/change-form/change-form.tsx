@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import WordInput from "./inputs/word-input";
 import MatureInputs from "./inputs/mature-inputs";
@@ -25,6 +26,8 @@ export default function ChangeWordForm(props: ComponentProps) {
   const changeWordData = async (
     submitData: ChangeFormInputs
   ): Promise<void> => {
+    const toastChangeID = toast.loading("Связываемся с БД..");
+
     try {
       const res = await fetch(
         `https://stupid-words-api.vercel.app/api/${props.APIEndPoint}/${props.word._id}`,
@@ -38,18 +41,36 @@ export default function ChangeWordForm(props: ComponentProps) {
       );
 
       if (res.ok) {
-        console.log("Yeai!");
+        toast.update(toastChangeID, {
+          render: "Связь с БД установлена!",
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+
         await props.getWordData();
         props.setWordToChangeID("");
       } else {
+        toast.update(toastChangeID, {
+          render: "Связь с БД установлена!",
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+
         res.status === 409
-          ? console.log(
-              "Word was allready added to main DB or deleted from current DB. Please, update current words list"
-            )
-          : console.log("Oops! Something is wrong.");
+          ? toast.warn("Слово было перенесено или удалено! Обновите список!")
+          : toast.error("Что-то пошло не так! Повторите попытку");
       }
     } catch (err) {
       console.log(err);
+
+      toast.update(toastChangeID, {
+        render: "Ошибка при взаимодействии с БД!",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
     }
   };
 
