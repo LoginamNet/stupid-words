@@ -36,7 +36,7 @@ export default function WordCard(props: ComponentProps) {
 
       if (res.ok) {
         toast.update(toastDelID, {
-          render: "Слово было успешно удалено!",
+          render: "Успешно удалено!",
           type: "success",
           isLoading: false,
           autoClose: 5000,
@@ -46,7 +46,7 @@ export default function WordCard(props: ComponentProps) {
       } else {
         if (res.status === 409) {
           toast.update(toastDelID, {
-            render: "Слово уже было удалено! Пожалуйсита, обновите список!",
+            render: "Слово уже было удалено! Обновите список!",
             type: "warning",
             isLoading: false,
             autoClose: 5000,
@@ -73,7 +73,7 @@ export default function WordCard(props: ComponentProps) {
   };
 
   const sendToActualWords = async (): Promise<void> => {
-    const toastSendID = toast.loading("Переносим в акиуальный словарь..");
+    const toastSendID = toast.loading("Переносим в актуальный словарь..");
 
     try {
       const res = await fetch(

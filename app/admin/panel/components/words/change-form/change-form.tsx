@@ -26,7 +26,7 @@ export default function ChangeWordForm(props: ComponentProps) {
   const changeWordData = async (
     submitData: ChangeFormInputs
   ): Promise<void> => {
-    const toastChangeID = toast.loading("Связываемся с БД..");
+    const toastChangeID = toast.loading("Изменяем слово..");
 
     try {
       const res = await fetch(
@@ -42,7 +42,7 @@ export default function ChangeWordForm(props: ComponentProps) {
 
       if (res.ok) {
         toast.update(toastChangeID, {
-          render: "Связь с БД установлена!",
+          render: "Изменения прошли успешно!",
           type: "success",
           isLoading: false,
           autoClose: 5000,
@@ -59,14 +59,24 @@ export default function ChangeWordForm(props: ComponentProps) {
         });
 
         res.status === 409
-          ? toast.warn("Слово было перенесено или удалено! Обновите список!")
-          : toast.error("Что-то пошло не так! Повторите попытку");
+          ? toast.update(toastChangeID, {
+              render: "Слово было перенесено или удалено! Обновите список!",
+              type: "warning",
+              isLoading: false,
+              autoClose: 5000,
+            })
+          : toast.update(toastChangeID, {
+              render: "Что-то пошло не так! Повторите попытку",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
       }
     } catch (err) {
       console.log(err);
 
       toast.update(toastChangeID, {
-        render: "Ошибка при взаимодействии с БД!",
+        render: "Что-то пошло не так! Повторите попытку",
         type: "error",
         isLoading: false,
         autoClose: 5000,

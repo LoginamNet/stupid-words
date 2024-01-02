@@ -43,7 +43,7 @@ export default function AddForm(props: ComponentProps) {
           autoClose: 5000,
         });
 
-        toast.success("Слово было успешно добавлено!");
+        toast.success("Успешно добавлено!");
       } else {
         toast.update(toastID, {
           render: "Связь с БД установлена!",
@@ -54,7 +54,7 @@ export default function AddForm(props: ComponentProps) {
 
         res.status === 409
           ? toast.warn(
-              "Данное слово уже сущестует в актуальном словаре или уже было предложено!"
+              "Слово уже добавлено в актуальный словарь или предложения!"
             )
           : toast.error("Что-то пошло не так! Повторите попытку");
       }
