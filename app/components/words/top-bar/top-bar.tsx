@@ -6,11 +6,13 @@ import SortInputs from "../inputs/sort-inputs";
 import { SearchParams } from "../interfaces";
 
 import styles from "./top-bar.module.css";
+import LimitInputs from "../inputs/limit-input";
 
 interface ComponentProps {
   searchParams: SearchParams;
   setSearchParams: Dispatch<SetStateAction<SearchParams>>;
   setWord(): void;
+  setLimit(): void;
   setSort(): void;
   getData(): Promise<void>;
 }
@@ -22,6 +24,12 @@ export default function TopBar(props: ComponentProps) {
         searchParams={props.searchParams}
         setSearchParams={props.setSearchParams}
         setWord={props.setWord}
+        getData={props.getData}
+      />
+      <LimitInputs
+        searchParams={props.searchParams}
+        setSearchParams={props.setSearchParams}
+        setLimit={props.setLimit}
         getData={props.getData}
       />
       <SortInputs

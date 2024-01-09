@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import List from "./list/list";
 import TopBar from "./top-bar/top-bar";
+import Pagination from "./pagination/pagination";
 import Filters from "./filters/filters";
 
 import { SearchParams, StupidWords } from "./interfaces";
@@ -19,6 +20,8 @@ export default function Words() {
     mature: "",
     type: "",
     sort: "",
+    page: "",
+    limit: "",
   });
 
   const setSearch = useCallback(() => {
@@ -65,6 +68,30 @@ export default function Words() {
     }
   }, [searchParams.sort, url]);
 
+  const setPage = useCallback(() => {
+    if (url) {
+      searchParams.page
+        ? url.searchParams.set("page", searchParams?.page)
+        : url.searchParams.delete("page");
+
+      url.searchParams.size
+        ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
+        : history.replaceState({}, "", "/");
+    }
+  }, [searchParams.page, url]);
+
+  const setLimit = useCallback(() => {
+    if (url) {
+      searchParams.limit
+        ? url.searchParams.set("limit", searchParams?.limit)
+        : url.searchParams.delete("limit");
+
+      url.searchParams.size
+        ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
+        : history.replaceState({}, "", "/");
+    }
+  }, [searchParams.limit, url]);
+
   const getData = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -85,6 +112,8 @@ export default function Words() {
 
       setWords(data);
       setIsLoading(false);
+
+      console.log(`render!`);
     } catch (err) {
       console.log(err);
     }
@@ -98,7 +127,11 @@ export default function Words() {
         ?.toString(),
       word: new URL(window.location.href).searchParams.get("word")?.toString(),
       type: new URL(window.location.href).searchParams.get("type")?.toString(),
+      page: new URL(window.location.href).searchParams.get("page")?.toString(),
       sort: new URL(window.location.href).searchParams.get("sort")?.toString(),
+      limit: new URL(window.location.href).searchParams
+        .get("limit")
+        ?.toString(),
     });
     getData();
   }, [getData]);
@@ -116,7 +149,16 @@ export default function Words() {
           searchParams={searchParams}
           setSearchParams={setSearchParams}
           setWord={setWord}
+          setLimit={setLimit}
           setSort={setSort}
+          getData={getData}
+        />
+        <Pagination
+          words={words}
+          isLoading={isLoading}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          setPage={setPage}
           getData={getData}
         />
         <List words={words} isLoading={isLoading} />
