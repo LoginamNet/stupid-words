@@ -9,8 +9,11 @@ import styles from "./filters.module.css";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  setSearch(): void;
+  searchHandler: (
+    immediatExecution: boolean,
+    paramToChange: string,
+    selectedValue: string
+  ) => void;
   getData(): Promise<void>;
 }
 
@@ -19,17 +22,16 @@ export default function Filters(props: ComponentProps) {
     <aside className={styles.filters}>
       <MatureInputs
         searchParams={props.searchParams}
-        setSearchParams={props.setSearchParams}
+        searchHandler={props.searchHandler}
       />
       <TypeInputs
         searchParams={props.searchParams}
-        setSearchParams={props.setSearchParams}
+        searchHandler={props.searchHandler}
       />
       <input
         type="button"
         value="СЕГОДНЯ МЫ С ТОБОЙ ФИЛЬТРУЕМ"
         onClick={() => {
-          props.setSearch();
           props.getData();
         }}
       ></input>

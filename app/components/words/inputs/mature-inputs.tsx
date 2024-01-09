@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent } from "react";
 
 import { SearchParams } from "../interfaces";
 
@@ -6,21 +6,22 @@ import styles from "../filters/filters.module.css";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
+  searchHandler: (
+    immediatExecution: boolean,
+    paramToChange: string,
+    selectedValue: string
+  ) => void;
 }
 
 export default function MatureInputs(props: ComponentProps) {
   const matureTypes = [
     { text: "Выражаюсь словами поэтов", type: "false", id: "false" },
     { text: "В роду были сапожники", type: "true", id: "true" },
-    { text: "Я готов увидеть всё", type: "", id: "all" },
+    { text: "Я готов увидеть всё", type: "all", id: "all" },
   ];
 
   const handleRadioInput = (e: ChangeEvent<HTMLInputElement>) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      mature: e.currentTarget.value,
-    });
+    props.searchHandler(false, "mature", e.currentTarget.value);
   };
 
   return (
@@ -34,9 +35,9 @@ export default function MatureInputs(props: ComponentProps) {
             value={el.type}
             id={`mature-${el.id}-input`}
             checked={
-              (props.searchParams.mature &&
-                props.searchParams.mature === el.type) ||
-              (!props.searchParams.mature && !el.type)
+              props.searchParams.mature
+                ? props.searchParams.mature === el.type
+                : el.type === "all"
             }
             onChange={(e) => handleRadioInput(e)}
           ></input>

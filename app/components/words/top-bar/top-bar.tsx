@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 import WordInput from "../inputs/word-input";
 import SortInputs from "../inputs/sort-inputs";
 
@@ -10,10 +8,11 @@ import LimitInputs from "../inputs/limit-input";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  setWord(): void;
-  searchHandler: (paramToChange: string, selectedValue: string) => void;
-  getData(): Promise<void>;
+  searchHandler: (
+    immediatExecution: boolean,
+    paramToChange: string,
+    selectedValue: string
+  ) => void;
 }
 
 export default function TopBar(props: ComponentProps) {

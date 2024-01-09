@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { SearchParams } from "../interfaces";
 
@@ -12,7 +6,11 @@ import styles from "../filters/filters.module.css";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
+  searchHandler: (
+    immediatExecution: boolean,
+    paramToChange: string,
+    selectedValue: string
+  ) => void;
 }
 
 export default function TypeInputs(props: ComponentProps) {
@@ -31,17 +29,11 @@ export default function TypeInputs(props: ComponentProps) {
       ? wordTypes.filter((type) => type !== e.currentTarget.value)
       : [...wordTypes, e.currentTarget.value];
 
-    props.setSearchParams({
-      ...props.searchParams,
-      type: wordTypes.join("-"),
-    });
+    props.searchHandler(false, "type", wordTypes.join("-"));
   };
 
   const handleCheckboxAllInput = () => {
-    props.setSearchParams({
-      ...props.searchParams,
-      type: initialTypes.join("-"),
-    });
+    props.searchHandler(false, "type", initialTypes.join("-"));
   };
 
   useEffect(() => {

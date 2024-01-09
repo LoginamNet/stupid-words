@@ -29,47 +29,21 @@ export default function Words() {
       mature: url.searchParams.get("mature")?.toString(),
       word: url.searchParams.get("word")?.toString(),
       type: url.searchParams.get("type")?.toString(),
-      page: url.searchParams.get("page")?.toString(),
+      page: url.searchParams.get("page")?.toString() || "1",
       sort: url.searchParams.get("sort")?.toString(),
       limit: url.searchParams.get("limit")?.toString(),
     });
   };
 
-  const setSearch = useCallback(() => {
+  const searchHandler = (
+    immediatExecution: boolean,
+    paramToChange: string,
+    selectedValue: string
+  ) => {
     if (url) {
-      searchParams.mature
-        ? url.searchParams.set("mature", searchParams?.mature)
-        : url.searchParams.delete("mature");
-
-      searchParams.type
-        ? url.searchParams.set("type", searchParams?.type)
-        : url.searchParams.delete("type");
-
-      searchParams.type &&
-        searchParams.type?.split("-").length === 4 &&
-        url.searchParams.delete("type");
-
-      url.searchParams.size
-        ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
-        : history.replaceState({}, "", "/");
-    }
-  }, [searchParams.mature, searchParams.type, url]);
-
-  const setWord = useCallback(() => {
-    if (url) {
-      searchParams.word
-        ? url.searchParams.set("word", searchParams?.word)
-        : url.searchParams.delete("word");
-
-      url.searchParams.size
-        ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
-        : history.replaceState({}, "", "/");
-    }
-  }, [searchParams.word, url]);
-
-  const searchHandler = (paramToChange: string, selectedValue: string) => {
-    if (url) {
-      url.searchParams.set(paramToChange, selectedValue);
+      selectedValue
+        ? url.searchParams.set(paramToChange, selectedValue)
+        : url.searchParams.delete(paramToChange);
 
       paramToChange !== "page" && url.searchParams.set("page", "1");
 
@@ -78,7 +52,7 @@ export default function Words() {
         : history.replaceState({}, "", "/");
 
       searchParamsHandler(url);
-      getData();
+      immediatExecution && getData();
     }
   };
 
@@ -102,8 +76,7 @@ export default function Words() {
 
       setWords(data);
       setIsLoading(false);
-
-      console.log(`render!`);
+      console.log("RENDER!");
     } catch (err) {
       console.log(err);
     }
@@ -120,18 +93,11 @@ export default function Words() {
     <section className={styles.words}>
       <Filters
         searchParams={searchParams}
-        setSearchParams={setSearchParams}
-        setSearch={setSearch}
+        searchHandler={searchHandler}
         getData={getData}
       />
       <div className={styles.words_list}>
-        <TopBar
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          setWord={setWord}
-          searchHandler={searchHandler}
-          getData={getData}
-        />
+        <TopBar searchParams={searchParams} searchHandler={searchHandler} />
         <Pagination
           words={words}
           isLoading={isLoading}

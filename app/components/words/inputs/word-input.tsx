@@ -10,7 +10,11 @@ import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  searchHandler: (paramToChange: string, selectedValue: string) => void;
+  searchHandler: (
+    immediatExecution: boolean,
+    paramToChange: string,
+    selectedValue: string
+  ) => void;
 }
 
 export default function WordInput(props: ComponentProps) {
@@ -24,7 +28,7 @@ export default function WordInput(props: ComponentProps) {
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      props.searchHandler("word", wordInputValue);
+      props.searchHandler(true, "word", wordInputValue);
     }, 700);
     return () => {
       clearTimeout(debounce);
