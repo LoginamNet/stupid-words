@@ -6,54 +6,49 @@ interface ComponentProps {
   words: StupidWords | undefined;
   isLoading: boolean;
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  setPage(): void;
-  getData(): Promise<void>;
+  searchHandler: (paramToChange: string, selectedValue: string) => void;
 }
 
 export default function Pagination(props: ComponentProps) {
-  const { setPage, getData } = props;
-
-  const handlePageSelect = (selectedPage: string) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      page: selectedPage,
-    });
-  };
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setPage();
-    getData();
-  }, [getData, props.searchParams.page, setPage]);
+    setCurrentPage(Number(props.searchParams.page));
+  }, [props.searchParams.page]);
 
   return props.words ? (
     <div>
-      <button onClick={() => handlePageSelect("1")}>{`<<`}</button>
-      {Number(props.searchParams.page) - 1 > 0 && (
+      <button onClick={() => props.searchHandler("page", "1")}>{`<<`}</button>
+      {currentPage - 1 > 0 && (
         <button
-          onClick={() =>
-            handlePageSelect(`${Number(props.searchParams.page) - 1}`)
-          }
+          onClick={() => {
+            console.log(currentPage, props.searchParams.page);
+            props.searchHandler("page", `${currentPage - 1}`);
+          }}
         >
-          {Number(props.searchParams.page) - 1}
+          {currentPage - 1}
         </button>
       )}
-      <button>{Number(props.searchParams.page) || 1}</button>
-      {Number(props.searchParams.page) + 1 <=
+      <button onClick={() => console.log(props.searchParams.page)}>
+        {currentPage || 1}
+      </button>
+      {currentPage + 1 <=
         Math.ceil(
           Number(props.words?.total) / (Number(props.searchParams.limit) || 10)
         ) && (
         <button
-          onClick={() =>
-            handlePageSelect(`${Number(props.searchParams.page) + 1}`)
-          }
+          onClick={() => {
+            console.log(props.searchParams.page);
+            props.searchHandler("page", `${currentPage + 1}`);
+          }}
         >
-          {Number(props.searchParams.page) + 1}
+          {currentPage + 1}
         </button>
       )}
       <button
         onClick={() =>
-          handlePageSelect(
+          props.searchHandler(
+            "page",
             `${Math.ceil(
               Number(props.words?.total) /
                 (Number(props.searchParams.limit) || 10)

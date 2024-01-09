@@ -12,8 +12,7 @@ interface ComponentProps {
   searchParams: SearchParams;
   setSearchParams: Dispatch<SetStateAction<SearchParams>>;
   setWord(): void;
-  setLimit(): void;
-  setSort(): void;
+  searchHandler: (paramToChange: string, selectedValue: string) => void;
   getData(): Promise<void>;
 }
 
@@ -22,21 +21,15 @@ export default function TopBar(props: ComponentProps) {
     <div className={styles.topBar}>
       <WordInput
         searchParams={props.searchParams}
-        setSearchParams={props.setSearchParams}
-        setWord={props.setWord}
-        getData={props.getData}
+        searchHandler={props.searchHandler}
       />
       <LimitInputs
         searchParams={props.searchParams}
-        setSearchParams={props.setSearchParams}
-        setLimit={props.setLimit}
-        getData={props.getData}
+        searchHandler={props.searchHandler}
       />
       <SortInputs
         searchParams={props.searchParams}
-        setSearchParams={props.setSearchParams}
-        setSort={props.setSort}
-        getData={props.getData}
+        searchHandler={props.searchHandler}
       />
     </div>
   );

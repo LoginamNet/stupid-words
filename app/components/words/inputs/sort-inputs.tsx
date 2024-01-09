@@ -1,17 +1,11 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
-
 import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  setSort(): void;
-  getData(): Promise<void>;
+  searchHandler: (paramToChange: string, selectedValue: string) => void;
 }
 
 export default function SortInputs(props: ComponentProps) {
-  const { setSort, getData } = props;
-
   const sortOrders = [
     { order: "word-asc", name: "по алфавиту (а-я)" },
     { order: "word-desc", name: "по алфавиту (я-а)" },
@@ -21,18 +15,6 @@ export default function SortInputs(props: ComponentProps) {
     { order: "likes-desc", name: "по лайкам ↑" },
   ];
 
-  const handleSortInput = (e: ChangeEvent<HTMLSelectElement>) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      sort: e.currentTarget.value,
-    });
-  };
-
-  useEffect(() => {
-    setSort();
-    getData();
-  }, [getData, props.searchParams.sort, setSort]);
-
   return (
     <label>
       Сортирнуть:
@@ -41,7 +23,7 @@ export default function SortInputs(props: ComponentProps) {
         id="sort-input"
         value={props.searchParams.sort}
         onChange={(e) => {
-          handleSortInput(e);
+          props.searchHandler("sort", e.currentTarget.value);
         }}
       >
         {sortOrders.map((sort, key) => (

@@ -10,14 +10,13 @@ import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  setWord(): void;
-  getData(): Promise<void>;
+  searchHandler: (paramToChange: string, selectedValue: string) => void;
 }
 
 export default function WordInput(props: ComponentProps) {
-  const { setWord, getData } = props;
-  const [wordInputValue, setWordInputValue] = useState(props.searchParams.word);
+  const [wordInputValue, setWordInputValue] = useState(
+    props.searchParams.word || ""
+  );
 
   const handleWordInput = (e: ChangeEvent<HTMLInputElement>) => {
     setWordInputValue(e.currentTarget.value);
@@ -25,21 +24,12 @@ export default function WordInput(props: ComponentProps) {
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      props.setSearchParams({
-        ...props.searchParams,
-        word: wordInputValue,
-      });
+      props.searchHandler("word", wordInputValue);
     }, 700);
     return () => {
       clearTimeout(debounce);
     };
-  }, [props, wordInputValue]);
-
-  useEffect(() => {
-    setWordInputValue(props.searchParams.word);
-    setWord();
-    getData();
-  }, [getData, props.searchParams.word, setWord]);
+  }, [wordInputValue]);
 
   return (
     <label>
@@ -47,7 +37,7 @@ export default function WordInput(props: ComponentProps) {
       <input
         type="text"
         name="word-input"
-        value={wordInputValue ? wordInputValue : ""}
+        value={wordInputValue}
         id="word-input"
         onChange={(e: ChangeEvent<HTMLInputElement>) => handleWordInput(e)}
       ></input>

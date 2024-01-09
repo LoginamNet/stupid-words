@@ -1,30 +1,12 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
-
 import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  setLimit(): void;
-  getData(): Promise<void>;
+  searchHandler: (paramToChange: string, selectedValue: string) => void;
 }
 
 export default function LimitInputs(props: ComponentProps) {
-  const { setLimit, getData } = props;
-
   const limits = [5, 10, 15, 30, 50, 100];
-
-  const handleLimitInput = (e: ChangeEvent<HTMLSelectElement>) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      limit: e.currentTarget.value,
-    });
-  };
-
-  useEffect(() => {
-    setLimit();
-    getData();
-  }, [getData, props.searchParams.limit, setLimit]);
 
   return (
     <label>
@@ -34,7 +16,7 @@ export default function LimitInputs(props: ComponentProps) {
         id="sort-input"
         value={props.searchParams.limit || 10}
         onChange={(e) => {
-          handleLimitInput(e);
+          props.searchHandler("limit", e.currentTarget.value);
         }}
       >
         {limits.map((limit, key) => (

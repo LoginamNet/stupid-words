@@ -24,6 +24,17 @@ export default function Words() {
     limit: "",
   });
 
+  const searchParamsHandler = (url: URL) => {
+    setSearchParams({
+      mature: url.searchParams.get("mature")?.toString(),
+      word: url.searchParams.get("word")?.toString(),
+      type: url.searchParams.get("type")?.toString(),
+      page: url.searchParams.get("page")?.toString(),
+      sort: url.searchParams.get("sort")?.toString(),
+      limit: url.searchParams.get("limit")?.toString(),
+    });
+  };
+
   const setSearch = useCallback(() => {
     if (url) {
       searchParams.mature
@@ -56,41 +67,20 @@ export default function Words() {
     }
   }, [searchParams.word, url]);
 
-  const setSort = useCallback(() => {
+  const searchHandler = (paramToChange: string, selectedValue: string) => {
     if (url) {
-      searchParams.sort
-        ? url.searchParams.set("sort", searchParams?.sort)
-        : url.searchParams.delete("sort");
+      url.searchParams.set(paramToChange, selectedValue);
+
+      paramToChange !== "page" && url.searchParams.set("page", "1");
 
       url.searchParams.size
         ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
         : history.replaceState({}, "", "/");
+
+      searchParamsHandler(url);
+      getData();
     }
-  }, [searchParams.sort, url]);
-
-  const setPage = useCallback(() => {
-    if (url) {
-      searchParams.page
-        ? url.searchParams.set("page", searchParams?.page)
-        : url.searchParams.delete("page");
-
-      url.searchParams.size
-        ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
-        : history.replaceState({}, "", "/");
-    }
-  }, [searchParams.page, url]);
-
-  const setLimit = useCallback(() => {
-    if (url) {
-      searchParams.limit
-        ? url.searchParams.set("limit", searchParams?.limit)
-        : url.searchParams.delete("limit");
-
-      url.searchParams.size
-        ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
-        : history.replaceState({}, "", "/");
-    }
-  }, [searchParams.limit, url]);
+  };
 
   const getData = useCallback(async (): Promise<void> => {
     try {
@@ -121,18 +111,8 @@ export default function Words() {
 
   useEffect(() => {
     setUrl(new URL(window.location.href));
-    setSearchParams({
-      mature: new URL(window.location.href).searchParams
-        .get("mature")
-        ?.toString(),
-      word: new URL(window.location.href).searchParams.get("word")?.toString(),
-      type: new URL(window.location.href).searchParams.get("type")?.toString(),
-      page: new URL(window.location.href).searchParams.get("page")?.toString(),
-      sort: new URL(window.location.href).searchParams.get("sort")?.toString(),
-      limit: new URL(window.location.href).searchParams
-        .get("limit")
-        ?.toString(),
-    });
+    searchParamsHandler(new URL(window.location.href));
+
     getData();
   }, [getData]);
 
@@ -149,17 +129,14 @@ export default function Words() {
           searchParams={searchParams}
           setSearchParams={setSearchParams}
           setWord={setWord}
-          setLimit={setLimit}
-          setSort={setSort}
+          searchHandler={searchHandler}
           getData={getData}
         />
         <Pagination
           words={words}
           isLoading={isLoading}
           searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          setPage={setPage}
-          getData={getData}
+          searchHandler={searchHandler}
         />
         <List words={words} isLoading={isLoading} />
       </div>
