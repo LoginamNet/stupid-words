@@ -7,7 +7,7 @@ import styles from "../filters/filters.module.css";
 interface ComponentProps {
   searchParams: SearchParams;
   searchHandler: (
-    immediatExecution: boolean,
+    immediateExecution: boolean,
     paramToChange: string,
     selectedValue: string
   ) => void;

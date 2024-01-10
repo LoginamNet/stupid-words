@@ -7,6 +7,7 @@ import { SearchParams } from "../interfaces";
 
 import styles from "./top-bar.module.css";
 import UpdateButton from "../buttons/update-button";
+import LimitInputs from "../inputs/limit-input";
 
 interface ComponentProps {
   searchParams: SearchParams;
@@ -19,6 +20,11 @@ export default function TopBar(props: ComponentProps) {
   return (
     <div className={styles.topBar}>
       <WordInput
+        searchParams={props.searchParams}
+        setSearchParams={props.setSearchParams}
+        handleQuery={props.handleQuery}
+      />
+      <LimitInputs
         searchParams={props.searchParams}
         setSearchParams={props.setSearchParams}
         handleQuery={props.handleQuery}

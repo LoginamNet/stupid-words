@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { SearchParams, StupidWords } from "../interfaces";
 
@@ -6,35 +6,32 @@ import styles from "./pagination.module.css";
 
 interface ComponentProps {
   words: StupidWords | undefined;
-  isLoading: boolean;
   searchParams: SearchParams;
-  searchHandler: (
-    immediateExecution: boolean,
-    paramToChange: string,
-    selectedValue: string
-  ) => void;
+  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
+  currentPage: number | undefined;
 }
 
 export default function Pagination(props: ComponentProps) {
-  const [currentPage, setCurrentPage] = useState<number | undefined>();
+  const { currentPage } = props;
 
-  useEffect(() => {
-    setCurrentPage(Number(props.searchParams.page));
-  }, [props.searchParams.page]);
+  const handlePageSelect = (page: number) => {
+    props.setSearchParams({
+      ...props.searchParams,
+      page: `${page}`,
+    });
+  };
 
   return props.words && currentPage ? (
     <div className={styles.button_box}>
       <button
         className={styles.button}
-        onClick={() => props.searchHandler(true, "page", "1")}
+        onClick={() => handlePageSelect(1)}
       >{`<<`}</button>
       {currentPage - 1 > 1 && <span>...</span>}
       {currentPage - 1 > 0 && (
         <button
           className={styles.button}
-          onClick={() =>
-            props.searchHandler(true, "page", `${currentPage - 1}`)
-          }
+          onClick={() => handlePageSelect(currentPage - 1)}
         >
           {currentPage - 1}
         </button>
@@ -46,9 +43,7 @@ export default function Pagination(props: ComponentProps) {
         ) && (
         <button
           className={styles.button}
-          onClick={() =>
-            props.searchHandler(true, "page", `${currentPage + 1}`)
-          }
+          onClick={() => handlePageSelect(currentPage + 1)}
         >
           {currentPage + 1}
         </button>
@@ -60,13 +55,11 @@ export default function Pagination(props: ComponentProps) {
       <button
         className={styles.button}
         onClick={() =>
-          props.searchHandler(
-            true,
-            "page",
-            `${Math.ceil(
+          handlePageSelect(
+            Math.ceil(
               Number(props.words?.total) /
                 (Number(props.searchParams.limit) || 10)
-            )}`
+            )
           )
         }
       >{`>>`}</button>

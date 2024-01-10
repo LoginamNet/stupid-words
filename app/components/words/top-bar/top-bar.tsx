@@ -9,7 +9,7 @@ import LimitInputs from "../inputs/limit-input";
 interface ComponentProps {
   searchParams: SearchParams;
   searchHandler: (
-    immediatExecution: boolean,
+    immediateExecution: boolean,
     paramToChange: string,
     selectedValue: string
   ) => void;

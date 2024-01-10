@@ -29,11 +29,17 @@ export default function WordInput(props: ComponentProps) {
         ...props.searchParams,
         word: wordInputValue,
       });
+
+      currentWord !== props.searchParams.word &&
+        props.setSearchParams({
+          ...props.searchParams,
+          page: "1",
+        });
     }, 700);
     return () => {
       clearTimeout(debounce);
     };
-  }, [props, wordInputValue]);
+  }, [currentWord, props, wordInputValue]);
 
   useEffect(() => {
     if (currentWord !== props.searchParams.word) {

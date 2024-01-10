@@ -36,7 +36,7 @@ export default function Words() {
   };
 
   const searchHandler = (
-    immediatExecution: boolean,
+    immediateExecution: boolean,
     paramToChange: string,
     selectedValue: string
   ) => {
@@ -52,7 +52,7 @@ export default function Words() {
         : history.replaceState({}, "", "/");
 
       searchParamsHandler(url);
-      immediatExecution && getData();
+      immediateExecution && getData();
     }
   };
 

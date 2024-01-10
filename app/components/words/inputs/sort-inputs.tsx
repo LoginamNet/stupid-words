@@ -3,7 +3,7 @@ import { SearchParams } from "../interfaces";
 interface ComponentProps {
   searchParams: SearchParams;
   searchHandler: (
-    immediatExecution: boolean,
+    immediateExecution: boolean,
     paramToChange: string,
     selectedValue: string
   ) => void;

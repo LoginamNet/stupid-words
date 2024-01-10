@@ -1,17 +1,11 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
   searchHandler: (
-    immediatExecution: boolean,
+    immediateExecution: boolean,
     paramToChange: string,
     selectedValue: string
   ) => void;
@@ -33,6 +27,7 @@ export default function WordInput(props: ComponentProps) {
     return () => {
       clearTimeout(debounce);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wordInputValue]);
 
   return (

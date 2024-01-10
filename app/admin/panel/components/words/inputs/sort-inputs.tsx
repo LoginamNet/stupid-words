@@ -32,6 +32,7 @@ export default function SortInputs(props: ComponentProps) {
     props.setSearchParams({
       ...props.searchParams,
       sort: e.currentTarget.value,
+      page: "1",
     });
   };
 

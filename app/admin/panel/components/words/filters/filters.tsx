@@ -14,6 +14,8 @@ interface ComponentProps {
 }
 
 export default function Filters(props: ComponentProps) {
+  const { handleQuery } = props;
+
   return (
     <aside className={styles.filters}>
       <MatureInputs
@@ -28,7 +30,7 @@ export default function Filters(props: ComponentProps) {
         type="button"
         value="Применить фильтры"
         onClick={() => {
-          props.handleQuery();
+          handleQuery();
         }}
       ></input>
     </aside>

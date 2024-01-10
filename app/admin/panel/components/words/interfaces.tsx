@@ -12,7 +12,7 @@ export interface Word {
 
 export interface StupidWords {
   status: string;
-  amount: number;
+  total: number;
   data: Word[];
 }
 
@@ -21,4 +21,6 @@ export interface SearchParams {
   mature?: string;
   type?: string;
   sort?: string;
+  page?: string;
+  limit: string;
 }

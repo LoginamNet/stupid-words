@@ -11,6 +11,7 @@ import { createSearchQuery } from "./ulits";
 import { SearchParams, StupidWords } from "./interfaces";
 
 import styles from "./words.module.css";
+import Pagination from "./pagination/pagination";
 
 interface ComponentProps {
   APIEndPoint: string;
@@ -24,12 +25,15 @@ export default function Words(props: ComponentProps) {
     mature: "",
     type: "",
     sort: "",
+    page: "1",
+    limit: "",
   });
   const [queryString, setQueryString] = useState("");
+  const [currentPage, setCurrentPage] = useState<number | undefined>(1);
 
-  const handleQuery = () => {
+  const handleQuery = useCallback(() => {
     setQueryString(createSearchQuery(searchParams));
-  };
+  }, [searchParams]);
 
   const getData = useCallback(async (): Promise<void> => {
     try {
@@ -58,6 +62,13 @@ export default function Words(props: ComponentProps) {
   }, [props.APIEndPoint, queryString]);
 
   useEffect(() => {
+    if (currentPage !== Number(searchParams.page)) {
+      setCurrentPage(Number(searchParams.page));
+      handleQuery();
+    }
+  }, [currentPage, handleQuery, searchParams.page]);
+
+  useEffect(() => {
     getData();
   }, [getData, queryString]);
 
@@ -74,6 +85,12 @@ export default function Words(props: ComponentProps) {
           setSearchParams={setSearchParams}
           handleQuery={handleQuery}
           getData={getData}
+        />
+        <Pagination
+          words={words}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          currentPage={currentPage}
         />
         <List
           APIEndPoint={props.APIEndPoint}

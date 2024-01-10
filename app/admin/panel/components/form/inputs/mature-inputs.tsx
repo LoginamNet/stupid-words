@@ -8,8 +8,8 @@ interface ComponentProps {
 
 export default function MatureInputs(props: ComponentProps) {
   const matureTypes = [
-    { text: "Да", type: "false", id: "false" },
-    { text: "Нет", type: "true", id: "true" },
+    { text: "Да", type: "true", id: "true" },
+    { text: "Нет", type: "false", id: "false" },
   ];
 
   return (
