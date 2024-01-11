@@ -1,47 +1,25 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-
 import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  handleQuery: () => void;
+  handleSearch: (
+    updateQuery: boolean,
+    updateParams: boolean,
+    goToFirtsPage: boolean,
+    keyToUpdate?: string,
+    valueToSet?: string
+  ) => void;
 }
 
 export default function SortInputs(props: ComponentProps) {
-  const { handleQuery } = props;
-  const [currentSortOrder, setCurrentSortOrder] = useState<string | undefined>(
-    ""
-  );
   const sortOrders = [
     { order: "word-asc", name: "алфавиту (а-я)" },
-    { order: "word-desc", name: "лфавиту (я-а)" },
+    { order: "word-desc", name: "алфавиту (я-а)" },
     { order: "updatedAt-asc", name: "дате ↓" },
     { order: "updatedAt-desc", name: "дате ↑" },
     { order: "likes-asc", name: "лайкам ↓" },
     { order: "likes-desc", name: "лайкам ↑" },
   ];
-
-  const handleSortInput = (e: ChangeEvent<HTMLSelectElement>) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      sort: e.currentTarget.value,
-      page: "1",
-    });
-  };
-
-  useEffect(() => {
-    if (currentSortOrder !== props.searchParams.sort) {
-      setCurrentSortOrder(props.searchParams.sort);
-      handleQuery();
-    }
-  }, [currentSortOrder, props.searchParams.sort, handleQuery]);
 
   return (
     <label>
@@ -51,7 +29,7 @@ export default function SortInputs(props: ComponentProps) {
         id="sort-input"
         value={props.searchParams.sort}
         onChange={(e) => {
-          handleSortInput(e);
+          props.handleSearch(true, true, true, "sort", e.currentTarget.value);
         }}
       >
         {sortOrders.map((sort, key) => (

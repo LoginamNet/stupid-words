@@ -1,36 +1,43 @@
-import { Dispatch, SetStateAction } from "react";
-
 import MatureInputs from "../inputs/mature-inputs";
 import TypeInputs from "../inputs/type-inputs";
 
-import { SearchParams } from "../interfaces";
+import { SearchParams, StupidWords } from "../interfaces";
 
 import styles from "./filters.module.css";
 
 interface ComponentProps {
+  words: StupidWords | undefined;
+  isLoading: boolean;
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  handleQuery: () => void;
+  handleSearch: (
+    updateQuery: boolean,
+    updateParams: boolean,
+    goToFirtsPage: boolean,
+    keyToUpdate?: string,
+    valueToSet?: string
+  ) => void;
 }
 
 export default function Filters(props: ComponentProps) {
-  const { handleQuery } = props;
-
   return (
-    <aside className={styles.filters}>
+    <aside
+      className={`${styles.filters} ${
+        (props.isLoading || !props.words) && styles.disabled
+      }`}
+    >
       <MatureInputs
         searchParams={props.searchParams}
-        setSearchParams={props.setSearchParams}
+        handleSearch={props.handleSearch}
       />
       <TypeInputs
         searchParams={props.searchParams}
-        setSearchParams={props.setSearchParams}
+        handleSearch={props.handleSearch}
       />
       <input
         type="button"
         value="Применить фильтры"
         onClick={() => {
-          handleQuery();
+          props.handleSearch(true, false, true);
         }}
       ></input>
     </aside>

@@ -18,3 +18,7 @@
 .fieldset input[type="button"] {
   margin-top: 10px;
 }
+
+.disabled {
+  opacity: 0.5;
+}

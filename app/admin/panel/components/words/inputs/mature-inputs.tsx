@@ -1,12 +1,16 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
-
 import { SearchParams } from "../interfaces";
 
 import styles from "../filters/filters.module.css";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
+  handleSearch: (
+    updateQuery: boolean,
+    updateParams: boolean,
+    goToFirtsPage: boolean,
+    keyToUpdate?: string,
+    valueToSet?: string
+  ) => void;
 }
 
 export default function MatureInputs(props: ComponentProps) {
@@ -15,13 +19,6 @@ export default function MatureInputs(props: ComponentProps) {
     { text: "Только 18+", type: "true", id: "true" },
     { text: "Всё", type: "", id: "all" },
   ];
-
-  const handleRadioInput = (e: ChangeEvent<HTMLInputElement>) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      mature: e.currentTarget.value,
-    });
-  };
 
   return (
     <fieldset className={styles.fieldset}>
@@ -38,7 +35,9 @@ export default function MatureInputs(props: ComponentProps) {
                 props.searchParams.mature === el.type) ||
               (!props.searchParams.mature && !el.type)
             }
-            onChange={(e) => handleRadioInput(e)}
+            onChange={(e) =>
+              props.handleSearch(false, true, false, "mature", e.target.value)
+            }
           ></input>
           {el.text}
         </label>

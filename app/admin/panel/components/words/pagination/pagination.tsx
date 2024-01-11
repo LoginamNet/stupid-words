@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { SearchParams, StupidWords } from "../interfaces";
 
@@ -6,23 +6,29 @@ import styles from "./pagination.module.css";
 
 interface ComponentProps {
   words: StupidWords | undefined;
+  isLoading: boolean;
   searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  currentPage: number | undefined;
+  currentPage: number;
+  handleSearch: (
+    updateQuery: boolean,
+    updateParams: boolean,
+    goToFirtsPage: boolean,
+    keyToUpdate?: string,
+    valueToSet?: string
+  ) => void;
 }
 
 export default function Pagination(props: ComponentProps) {
   const { currentPage } = props;
 
   const handlePageSelect = (page: number) => {
-    props.setSearchParams({
-      ...props.searchParams,
-      page: `${page}`,
-    });
+    props.handleSearch(true, true, false, "page", `${page}`);
   };
 
-  return props.words && currentPage ? (
-    <div className={styles.button_box}>
+  return props.words ? (
+    <div
+      className={`${styles.button_box} ${props.isLoading && styles.disabled}`}
+    >
       <button
         className={styles.button}
         onClick={() => handlePageSelect(1)}
@@ -65,6 +71,6 @@ export default function Pagination(props: ComponentProps) {
       >{`>>`}</button>
     </div>
   ) : (
-    <div>Считаем странички...</div>
+    <div className={styles.button_box}>Считаем странички...</div>
   );
 }

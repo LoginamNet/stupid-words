@@ -1,21 +1,16 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-
-import { SearchParams } from "../interfaces";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface ComponentProps {
-  searchParams: SearchParams;
-  setSearchParams: Dispatch<SetStateAction<SearchParams>>;
-  handleQuery: () => void;
+  handleSearch: (
+    updateQuery: boolean,
+    updateParams: boolean,
+    goToFirtsPage: boolean,
+    keyToUpdate?: string,
+    valueToSet?: string
+  ) => void;
 }
 
 export default function WordInput(props: ComponentProps) {
-  const { handleQuery } = props;
   const [currentWord, setCurrentWord] = useState<string | undefined>("");
   const [wordInputValue, setWordInputValue] = useState("");
 
@@ -25,28 +20,17 @@ export default function WordInput(props: ComponentProps) {
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      props.setSearchParams({
-        ...props.searchParams,
-        word: wordInputValue,
-      });
-
-      currentWord !== props.searchParams.word &&
-        props.setSearchParams({
-          ...props.searchParams,
-          page: "1",
-        });
+      setCurrentWord(wordInputValue);
     }, 700);
     return () => {
       clearTimeout(debounce);
     };
-  }, [currentWord, props, wordInputValue]);
+  }, [wordInputValue]);
 
   useEffect(() => {
-    if (currentWord !== props.searchParams.word) {
-      setCurrentWord(props.searchParams.word);
-      handleQuery();
-    }
-  }, [currentWord, props.searchParams.word, handleQuery]);
+    props.handleSearch(true, true, true, "word", currentWord);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWord]);
 
   return (
     <label>

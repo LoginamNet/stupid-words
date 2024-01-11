@@ -5,13 +5,13 @@ import { useCallback, useEffect, useState } from "react";
 import List from "./list/list";
 import TopBar from "./top-bar/top-bar";
 import Filters from "./filters/filters";
+import Pagination from "./pagination/pagination";
 
 import { createSearchQuery } from "./ulits";
 
 import { SearchParams, StupidWords } from "./interfaces";
 
 import styles from "./words.module.css";
-import Pagination from "./pagination/pagination";
 
 interface ComponentProps {
   APIEndPoint: string;
@@ -28,12 +28,58 @@ export default function Words(props: ComponentProps) {
     page: "1",
     limit: "",
   });
+  const [currentPage, setCurrentPage] = useState(1);
   const [queryString, setQueryString] = useState("");
-  const [currentPage, setCurrentPage] = useState<number | undefined>(1);
 
-  const handleQuery = useCallback(() => {
-    setQueryString(createSearchQuery(searchParams));
-  }, [searchParams]);
+  const handleNewSearchParams = (newParams: SearchParams) => {
+    setSearchParams({
+      ...searchParams,
+      word: newParams.word,
+      mature: newParams.mature,
+      type: newParams.type,
+      sort: newParams.sort,
+      page: newParams.page,
+      limit: newParams.limit,
+    });
+  };
+
+  const handleCurrentPage = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleNewQuery = (newParams: SearchParams) => {
+    setQueryString(createSearchQuery(newParams));
+  };
+
+  const handleSearch = (
+    updateQuery: boolean,
+    updateParams: boolean,
+    goToFirtsPage: boolean,
+    keyToUpdate?: string,
+    valueToSet?: string
+  ) => {
+    let newParams = searchParams;
+    let newPage = 1;
+
+    if (keyToUpdate) {
+      newParams = {
+        ...newParams,
+        [keyToUpdate]: valueToSet,
+      };
+    }
+
+    if (goToFirtsPage) {
+      newParams = { ...newParams, page: "1" };
+    }
+
+    if (keyToUpdate === "page") {
+      newPage = Number(valueToSet);
+    }
+
+    updateQuery && handleCurrentPage(newPage);
+    updateQuery && handleNewQuery(newParams);
+    updateParams && handleNewSearchParams(newParams);
+  };
 
   const getData = useCallback(async (): Promise<void> => {
     try {
@@ -62,35 +108,31 @@ export default function Words(props: ComponentProps) {
   }, [props.APIEndPoint, queryString]);
 
   useEffect(() => {
-    if (currentPage !== Number(searchParams.page)) {
-      setCurrentPage(Number(searchParams.page));
-      handleQuery();
-    }
-  }, [currentPage, handleQuery, searchParams.page]);
-
-  useEffect(() => {
     getData();
   }, [getData, queryString]);
 
   return (
     <div className={styles.words}>
       <Filters
+        words={words}
+        isLoading={isLoading}
         searchParams={searchParams}
-        setSearchParams={setSearchParams}
-        handleQuery={handleQuery}
+        handleSearch={handleSearch}
       />
       <div className={styles.words_list}>
         <TopBar
+          words={words}
+          isLoading={isLoading}
           searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          handleQuery={handleQuery}
+          handleSearch={handleSearch}
           getData={getData}
         />
         <Pagination
           words={words}
+          isLoading={isLoading}
           searchParams={searchParams}
-          setSearchParams={setSearchParams}
           currentPage={currentPage}
+          handleSearch={handleSearch}
         />
         <List
           APIEndPoint={props.APIEndPoint}
