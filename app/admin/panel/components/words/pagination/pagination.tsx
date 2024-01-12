@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SearchParams, StupidWords } from "../interfaces";
 
@@ -8,22 +8,19 @@ interface ComponentProps {
   words: StupidWords | undefined;
   isLoading: boolean;
   searchParams: SearchParams;
-  currentPage: number;
-  handleSearch: (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => void;
+  handleNewSearchParams: (newParams: SearchParams) => void;
 }
 
 export default function Pagination(props: ComponentProps) {
-  const { currentPage } = props;
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageSelect = (page: number) => {
-    props.handleSearch(true, true, false, "page", `${page}`);
+    props.handleNewSearchParams({ ...props.searchParams, page: `${page}` });
   };
+
+  useEffect(() => {
+    setCurrentPage(Number(props.searchParams.page));
+  }, [props.searchParams.page]);
 
   return props.words ? (
     <div

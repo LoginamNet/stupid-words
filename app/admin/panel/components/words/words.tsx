@@ -28,57 +28,17 @@ export default function Words(props: ComponentProps) {
     page: "1",
     limit: "",
   });
-  const [currentPage, setCurrentPage] = useState(1);
   const [queryString, setQueryString] = useState("");
 
   const handleNewSearchParams = (newParams: SearchParams) => {
     setSearchParams({
       ...searchParams,
-      word: newParams.word,
-      mature: newParams.mature,
-      type: newParams.type,
-      sort: newParams.sort,
-      page: newParams.page,
-      limit: newParams.limit,
+      ...newParams,
     });
-  };
-
-  const handleCurrentPage = (page: number) => {
-    setCurrentPage(page);
   };
 
   const handleNewQuery = (newParams: SearchParams) => {
     setQueryString(createSearchQuery(newParams));
-  };
-
-  const handleSearch = (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => {
-    let newParams = searchParams;
-    let newPage = 1;
-
-    if (keyToUpdate) {
-      newParams = {
-        ...newParams,
-        [keyToUpdate]: valueToSet,
-      };
-    }
-
-    if (goToFirtsPage) {
-      newParams = { ...newParams, page: "1" };
-    }
-
-    if (keyToUpdate === "page") {
-      newPage = Number(valueToSet);
-    }
-
-    updateQuery && handleCurrentPage(newPage);
-    updateQuery && handleNewQuery(newParams);
-    updateParams && handleNewSearchParams(newParams);
   };
 
   const getData = useCallback(async (): Promise<void> => {
@@ -108,6 +68,10 @@ export default function Words(props: ComponentProps) {
   }, [props.APIEndPoint, queryString]);
 
   useEffect(() => {
+    handleNewQuery(searchParams);
+  }, [searchParams]);
+
+  useEffect(() => {
     getData();
   }, [getData, queryString]);
 
@@ -116,23 +80,21 @@ export default function Words(props: ComponentProps) {
       <Filters
         words={words}
         isLoading={isLoading}
-        searchParams={searchParams}
-        handleSearch={handleSearch}
+        handleNewSearchParams={handleNewSearchParams}
       />
       <div className={styles.words_list}>
         <TopBar
           words={words}
           isLoading={isLoading}
           searchParams={searchParams}
-          handleSearch={handleSearch}
+          handleNewSearchParams={handleNewSearchParams}
           getData={getData}
         />
         <Pagination
           words={words}
           isLoading={isLoading}
           searchParams={searchParams}
-          currentPage={currentPage}
-          handleSearch={handleSearch}
+          handleNewSearchParams={handleNewSearchParams}
         />
         <List
           APIEndPoint={props.APIEndPoint}

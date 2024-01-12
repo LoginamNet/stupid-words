@@ -3,7 +3,7 @@ import LimitInputs from "../inputs/limit-input";
 import SortInputs from "../inputs/sort-inputs";
 import UpdateButton from "../buttons/update-button";
 
-import { SearchParams, StupidWords } from "../interfaces";
+import { FilterParams, SearchParams, StupidWords } from "../interfaces";
 
 import styles from "./top-bar.module.css";
 
@@ -11,13 +11,7 @@ interface ComponentProps {
   words: StupidWords | undefined;
   isLoading: boolean;
   searchParams: SearchParams;
-  handleSearch: (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => void;
+  handleNewSearchParams: (newParams: SearchParams | FilterParams) => void;
   getData: () => Promise<void>;
 }
 
@@ -28,14 +22,17 @@ export default function TopBar(props: ComponentProps) {
         (props.isLoading || !props.words) && styles.disabled
       }`}
     >
-      <WordInput handleSearch={props.handleSearch} />
+      <WordInput
+        searchParams={props.searchParams}
+        handleNewSearchParams={props.handleNewSearchParams}
+      />
       <LimitInputs
         searchParams={props.searchParams}
-        handleSearch={props.handleSearch}
+        handleNewSearchParams={props.handleNewSearchParams}
       />
       <SortInputs
         searchParams={props.searchParams}
-        handleSearch={props.handleSearch}
+        handleNewSearchParams={props.handleNewSearchParams}
       />
       <UpdateButton getData={props.getData} />
     </div>

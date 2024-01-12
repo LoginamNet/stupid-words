@@ -22,5 +22,10 @@ export interface SearchParams {
   type?: string;
   sort?: string;
   page?: string;
-  limit: string;
+  limit?: string;
+}
+
+export interface FilterParams {
+  mature: string | undefined;
+  type: string | undefined;
 }

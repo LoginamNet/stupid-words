@@ -2,13 +2,7 @@ import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  handleSearch: (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => void;
+  handleNewSearchParams: (newParams: SearchParams) => void;
 }
 
 export default function SortInputs(props: ComponentProps) {
@@ -29,7 +23,11 @@ export default function SortInputs(props: ComponentProps) {
         id="sort-input"
         value={props.searchParams.sort}
         onChange={(e) => {
-          props.handleSearch(true, true, true, "sort", e.currentTarget.value);
+          props.handleNewSearchParams({
+            ...props.searchParams,
+            sort: e.currentTarget.value,
+            page: "1",
+          });
         }}
       >
         {sortOrders.map((sort, key) => (

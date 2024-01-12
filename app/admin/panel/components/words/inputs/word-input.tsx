@@ -1,13 +1,10 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
+import { SearchParams } from "../interfaces";
+
 interface ComponentProps {
-  handleSearch: (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => void;
+  searchParams: SearchParams;
+  handleNewSearchParams: (newParams: SearchParams) => void;
 }
 
 export default function WordInput(props: ComponentProps) {
@@ -28,7 +25,11 @@ export default function WordInput(props: ComponentProps) {
   }, [wordInputValue]);
 
   useEffect(() => {
-    props.handleSearch(true, true, true, "word", currentWord);
+    props.handleNewSearchParams({
+      ...props.searchParams,
+      word: currentWord,
+      page: "1",
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWord]);
 

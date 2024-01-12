@@ -2,13 +2,7 @@ import { SearchParams } from "../interfaces";
 
 interface ComponentProps {
   searchParams: SearchParams;
-  handleSearch: (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => void;
+  handleNewSearchParams: (newParams: SearchParams) => void;
 }
 
 export default function LimitInputs(props: ComponentProps) {
@@ -22,7 +16,11 @@ export default function LimitInputs(props: ComponentProps) {
         id="sort-input"
         value={props.searchParams.limit || 10}
         onChange={(e) => {
-          props.handleSearch(true, true, true, "limit", e.currentTarget.value);
+          props.handleNewSearchParams({
+            ...props.searchParams,
+            limit: e.currentTarget.value,
+            page: "1",
+          });
         }}
       >
         {limits.map((limit, key) => (

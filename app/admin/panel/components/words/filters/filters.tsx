@@ -1,24 +1,31 @@
+import { useState } from "react";
+
 import MatureInputs from "../inputs/mature-inputs";
 import TypeInputs from "../inputs/type-inputs";
 
-import { SearchParams, StupidWords } from "../interfaces";
+import { FilterParams, SearchParams, StupidWords } from "../interfaces";
 
 import styles from "./filters.module.css";
 
 interface ComponentProps {
   words: StupidWords | undefined;
   isLoading: boolean;
-  searchParams: SearchParams;
-  handleSearch: (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => void;
+  handleNewSearchParams: (newParams: SearchParams) => void;
 }
 
 export default function Filters(props: ComponentProps) {
+  const [filterParams, setSearchParams] = useState<FilterParams>({
+    mature: "",
+    type: "",
+  });
+
+  const handleFilterParams = (keyToUpdate: string, valueToSet: string) => {
+    setSearchParams({
+      ...filterParams,
+      [keyToUpdate]: valueToSet,
+    });
+  };
+
   return (
     <aside
       className={`${styles.filters} ${
@@ -26,18 +33,18 @@ export default function Filters(props: ComponentProps) {
       }`}
     >
       <MatureInputs
-        searchParams={props.searchParams}
-        handleSearch={props.handleSearch}
+        filterParams={filterParams}
+        handleFilterParams={handleFilterParams}
       />
       <TypeInputs
-        searchParams={props.searchParams}
-        handleSearch={props.handleSearch}
+        filterParams={filterParams}
+        handleFilterParams={handleFilterParams}
       />
       <input
         type="button"
         value="Применить фильтры"
         onClick={() => {
-          props.handleSearch(true, false, true);
+          props.handleNewSearchParams({ ...filterParams, page: "1" });
         }}
       ></input>
     </aside>

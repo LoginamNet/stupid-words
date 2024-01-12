@@ -1,16 +1,10 @@
-import { SearchParams } from "../interfaces";
+import { FilterParams } from "../interfaces";
 
 import styles from "../filters/filters.module.css";
 
 interface ComponentProps {
-  searchParams: SearchParams;
-  handleSearch: (
-    updateQuery: boolean,
-    updateParams: boolean,
-    goToFirtsPage: boolean,
-    keyToUpdate?: string,
-    valueToSet?: string
-  ) => void;
+  filterParams: FilterParams;
+  handleFilterParams: (keyToUpdate: string, valueToSet: string) => void;
 }
 
 export default function MatureInputs(props: ComponentProps) {
@@ -31,13 +25,11 @@ export default function MatureInputs(props: ComponentProps) {
             value={el.type}
             id={`mature-${el.id}-input`}
             checked={
-              (props.searchParams.mature &&
-                props.searchParams.mature === el.type) ||
-              (!props.searchParams.mature && !el.type)
+              (props.filterParams.mature &&
+                props.filterParams.mature === el.type) ||
+              (!props.filterParams.mature && !el.type)
             }
-            onChange={(e) =>
-              props.handleSearch(false, true, false, "mature", e.target.value)
-            }
+            onChange={(e) => props.handleFilterParams("mature", e.target.value)}
           ></input>
           {el.text}
         </label>
