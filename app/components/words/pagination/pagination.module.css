@@ -3,10 +3,18 @@
   gap: 10px;
 }
 
-.current {
-  background-color: aquamarine;
+.button {
+}
+
+.button__current {
+  background-color: rgb(97, 139, 255);
 }
 
 .button:active {
-  background-color: aquamarine;
+  background-color: rgb(97, 139, 255);
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

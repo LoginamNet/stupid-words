@@ -58,7 +58,9 @@ export default function Filters(props: ComponentProps) {
   ]);
 
   return (
-    <aside className={styles.filters}>
+    <aside
+      className={`${styles.filters} ${props.isLoading && styles.disabled}`}
+    >
       <MatureInputs
         filterParams={filterParams}
         handleFilterParams={handleFilterParams}

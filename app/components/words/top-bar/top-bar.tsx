@@ -18,7 +18,7 @@ interface ComponentProps {
 
 export default function TopBar(props: ComponentProps) {
   return (
-    <div className={styles.topBar}>
+    <div className={`${styles.topBar} ${props.isLoading && styles.disabled}`}>
       <WordInput
         searchParams={props.searchParams}
         searchHandler={props.searchHandler}

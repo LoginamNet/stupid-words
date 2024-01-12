@@ -31,10 +31,18 @@ a {
   text-decoration: none;
 }
 
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 input[type="button"],
 input[type="submit"] {
   width: 100%;
   padding: 10px;
   border: none;
   border-radius: 10px;
+  cursor: pointer;
 }

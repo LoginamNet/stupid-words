@@ -23,7 +23,9 @@ export default function Pagination(props: ComponentProps) {
   }, [props.searchParams.page]);
 
   return props.words && currentPage ? (
-    <div className={styles.button_box}>
+    <div
+      className={`${styles.button_box} ${props.isLoading && styles.disabled}`}
+    >
       <button
         className={styles.button}
         onClick={() => props.searchHandler(true, "page", "1")}
@@ -39,7 +41,9 @@ export default function Pagination(props: ComponentProps) {
           {currentPage - 1}
         </button>
       )}
-      <button className={styles.current}>{currentPage}</button>
+      <button className={`${styles.button} ${styles.button__current}`}>
+        {currentPage}
+      </button>
       {currentPage + 1 <=
         Math.ceil(
           Number(props.words?.total) / (Number(props.searchParams.limit) || 10)
