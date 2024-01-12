@@ -1,16 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
-import { SearchParams } from "../interfaces";
+import { FilterParams } from "../interfaces";
 
 import styles from "../filters/filters.module.css";
 
 interface ComponentProps {
-  searchParams: SearchParams;
-  searchHandler: (
-    immediateExecution: boolean,
-    paramToChange: string,
-    selectedValue: string
-  ) => void;
+  filterParams: FilterParams;
+  handleFilterParams: (keyToUpdate: string, valueToSet: string) => void;
 }
 
 export default function TypeInputs(props: ComponentProps) {
@@ -29,17 +25,17 @@ export default function TypeInputs(props: ComponentProps) {
       ? wordTypes.filter((type) => type !== e.currentTarget.value)
       : [...wordTypes, e.currentTarget.value];
 
-    props.searchHandler(false, "type", wordTypes.join("-"));
+    props.handleFilterParams("type", wordTypes.join("-"));
   };
 
   const handleCheckboxAllInput = () => {
-    props.searchHandler(false, "type", initialTypes.join("-"));
+    props.handleFilterParams("type", initialTypes.join("-"));
   };
 
   useEffect(() => {
-    props.searchParams.type &&
-      setWordTypes(props.searchParams.type?.split("-"));
-  }, [props.searchParams.type]);
+    props.filterParams.type &&
+      setWordTypes(props.filterParams.type?.split("-"));
+  }, [props.filterParams.type]);
 
   return (
     <fieldset className={styles.fieldset}>

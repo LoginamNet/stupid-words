@@ -7,7 +7,7 @@ import TopBar from "./top-bar/top-bar";
 import Pagination from "./pagination/pagination";
 import Filters from "./filters/filters";
 
-import { SearchParams, StupidWords } from "./interfaces";
+import { FilterParams, SearchParams, StupidWords } from "./interfaces";
 
 import styles from "./words.module.css";
 
@@ -38,7 +38,8 @@ export default function Words() {
   const searchHandler = (
     immediateExecution: boolean,
     paramToChange: string,
-    selectedValue: string
+    selectedValue: string,
+    filterParams?: FilterParams
   ) => {
     if (url) {
       selectedValue
@@ -46,6 +47,14 @@ export default function Words() {
         : url.searchParams.delete(paramToChange);
 
       paramToChange !== "page" && url.searchParams.set("page", "1");
+
+      if (filterParams) {
+        for (const [key, value] of Object.entries(filterParams)) {
+          selectedValue
+            ? url.searchParams.set(key, value)
+            : url.searchParams.delete(key);
+        }
+      }
 
       url.searchParams.size
         ? history.replaceState({}, "", `?${url.searchParams.toString()}`)
@@ -76,7 +85,6 @@ export default function Words() {
 
       setWords(data);
       setIsLoading(false);
-      console.log("RENDER!");
     } catch (err) {
       console.log(err);
     }
@@ -91,13 +99,13 @@ export default function Words() {
 
   return (
     <section className={styles.words}>
-      <Filters
-        searchParams={searchParams}
-        searchHandler={searchHandler}
-        getData={getData}
-      />
+      <Filters isLoading={isLoading} searchHandler={searchHandler} />
       <div className={styles.words_list}>
-        <TopBar searchParams={searchParams} searchHandler={searchHandler} />
+        <TopBar
+          isLoading={isLoading}
+          searchParams={searchParams}
+          searchHandler={searchHandler}
+        />
         <Pagination
           words={words}
           isLoading={isLoading}

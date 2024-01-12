@@ -7,6 +7,7 @@ import styles from "./top-bar.module.css";
 import LimitInputs from "../inputs/limit-input";
 
 interface ComponentProps {
+  isLoading: boolean;
   searchParams: SearchParams;
   searchHandler: (
     immediateExecution: boolean,

@@ -24,3 +24,8 @@ export interface SearchParams {
   page?: string;
   limit?: string;
 }
+
+export interface FilterParams {
+  mature: string | undefined;
+  type: string | undefined;
+}

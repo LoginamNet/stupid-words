@@ -1,38 +1,50 @@
-import { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 
 import MatureInputs from "../inputs/mature-inputs";
 import TypeInputs from "../inputs/type-inputs";
 
-import { SearchParams } from "../interfaces";
+import { FilterParams, SearchParams } from "../interfaces";
 
 import styles from "./filters.module.css";
 
 interface ComponentProps {
-  searchParams: SearchParams;
+  isLoading: boolean;
   searchHandler: (
     immediateExecution: boolean,
     paramToChange: string,
-    selectedValue: string
+    selectedValue: string,
+    filterParams?: FilterParams
   ) => void;
-  getData(): Promise<void>;
 }
 
 export default function Filters(props: ComponentProps) {
+  const [filterParams, setSearchParams] = useState<FilterParams>({
+    mature: "",
+    type: "",
+  });
+
+  const handleFilterParams = (keyToUpdate: string, valueToSet: string) => {
+    setSearchParams({
+      ...filterParams,
+      [keyToUpdate]: valueToSet,
+    });
+  };
+
   return (
     <aside className={styles.filters}>
       <MatureInputs
-        searchParams={props.searchParams}
-        searchHandler={props.searchHandler}
+        filterParams={filterParams}
+        handleFilterParams={handleFilterParams}
       />
       <TypeInputs
-        searchParams={props.searchParams}
-        searchHandler={props.searchHandler}
+        filterParams={filterParams}
+        handleFilterParams={handleFilterParams}
       />
       <input
         type="button"
         value="СЕГОДНЯ МЫ С ТОБОЙ ФИЛЬТРУЕМ"
         onClick={() => {
-          props.getData();
+          props.searchHandler(true, "page", "1", filterParams);
         }}
       ></input>
     </aside>

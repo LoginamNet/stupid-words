@@ -1,16 +1,12 @@
 import { ChangeEvent } from "react";
 
-import { SearchParams } from "../interfaces";
+import { FilterParams } from "../interfaces";
 
 import styles from "../filters/filters.module.css";
 
 interface ComponentProps {
-  searchParams: SearchParams;
-  searchHandler: (
-    immediateExecution: boolean,
-    paramToChange: string,
-    selectedValue: string
-  ) => void;
+  filterParams: FilterParams;
+  handleFilterParams: (keyToUpdate: string, valueToSet: string) => void;
 }
 
 export default function MatureInputs(props: ComponentProps) {
@@ -19,10 +15,6 @@ export default function MatureInputs(props: ComponentProps) {
     { text: "В роду были сапожники", type: "true", id: "true" },
     { text: "Я готов увидеть всё", type: "all", id: "all" },
   ];
-
-  const handleRadioInput = (e: ChangeEvent<HTMLInputElement>) => {
-    props.searchHandler(false, "mature", e.currentTarget.value);
-  };
 
   return (
     <fieldset className={styles.fieldset}>
@@ -35,11 +27,11 @@ export default function MatureInputs(props: ComponentProps) {
             value={el.type}
             id={`mature-${el.id}-input`}
             checked={
-              props.searchParams.mature
-                ? props.searchParams.mature === el.type
+              props.filterParams.mature
+                ? props.filterParams.mature === el.type
                 : el.type === "all"
             }
-            onChange={(e) => handleRadioInput(e)}
+            onChange={(e) => props.handleFilterParams("mature", e.target.value)}
           ></input>
           {el.text}
         </label>
