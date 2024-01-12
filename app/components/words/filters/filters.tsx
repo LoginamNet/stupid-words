@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import MatureInputs from "../inputs/mature-inputs";
 import TypeInputs from "../inputs/type-inputs";
 
-import { FilterParams, SearchParams } from "../interfaces";
+import { FilterParams } from "../interfaces";
 
 import styles from "./filters.module.css";
 
@@ -22,6 +22,9 @@ export default function Filters(props: ComponentProps) {
     mature: "",
     type: "",
   });
+  const [currentfilterParams, setCurrentfilterParams] =
+    useState<FilterParams>(filterParams);
+  const [isFiltersChanged, setIsFiltersChanged] = useState(false);
 
   const handleFilterParams = (keyToUpdate: string, valueToSet: string) => {
     setSearchParams({
@@ -29,6 +32,30 @@ export default function Filters(props: ComponentProps) {
       [keyToUpdate]: valueToSet,
     });
   };
+
+  const handleFiltersChanged = useCallback(() => {
+    setIsFiltersChanged(true);
+    setCurrentfilterParams({ ...currentfilterParams, ...filterParams });
+  }, [currentfilterParams, filterParams]);
+
+  const handleFiltersNotChanged = () => {
+    setIsFiltersChanged(false);
+  };
+
+  useEffect(() => {
+    if (
+      currentfilterParams.mature !== filterParams.mature ||
+      currentfilterParams.type !== filterParams.type
+    ) {
+      handleFiltersChanged();
+    }
+  }, [
+    currentfilterParams.mature,
+    currentfilterParams.type,
+    filterParams.mature,
+    filterParams.type,
+    handleFiltersChanged,
+  ]);
 
   return (
     <aside className={styles.filters}>
@@ -41,10 +68,14 @@ export default function Filters(props: ComponentProps) {
         handleFilterParams={handleFilterParams}
       />
       <input
+        className={`${styles.button} ${
+          !isFiltersChanged && styles.button__disabled
+        }`}
         type="button"
-        value="СЕГОДНЯ МЫ С ТОБОЙ ФИЛЬТРУЕМ"
+        value={"ПРИМЕНИТЬ"}
         onClick={() => {
           props.searchHandler(true, "page", "1", filterParams);
+          handleFiltersNotChanged();
         }}
       ></input>
     </aside>

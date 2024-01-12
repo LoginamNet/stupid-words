@@ -17,3 +17,15 @@
 .fieldset input[type="button"] {
   margin-top: 10px;
 }
+
+.button {
+  color: white;
+  background-color: rgb(97, 139, 255);
+}
+
+.button__disabled {
+  color: black;
+  background-color: grey;
+  opacity: 0.5;
+  pointer-events: none;
+}

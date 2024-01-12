@@ -55,6 +55,7 @@ export default function TypeInputs(props: ComponentProps) {
         </label>
       ))}
       <input
+        className={styles.button}
         type="button"
         value="ВСЕ ВЕЗДЕ И СРАЗУ"
         onClick={() => handleCheckboxAllInput()}
