@@ -90,17 +90,17 @@ export default function Words(props: ComponentProps) {
           handleNewSearchParams={handleNewSearchParams}
           getData={getData}
         />
-        <Pagination
-          words={words}
-          isLoading={isLoading}
-          searchParams={searchParams}
-          handleNewSearchParams={handleNewSearchParams}
-        />
         <List
           APIEndPoint={props.APIEndPoint}
           words={words}
           isLoading={isLoading}
           getData={getData}
+        />
+        <Pagination
+          words={words}
+          isLoading={isLoading}
+          searchParams={searchParams}
+          handleNewSearchParams={handleNewSearchParams}
         />
       </div>
     </div>

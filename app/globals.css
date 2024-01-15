@@ -23,6 +23,7 @@ section {
 
 label {
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -38,11 +39,18 @@ button {
   cursor: pointer;
 }
 
+input,
+select {
+  height: fit-content;
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 10px;
+}
+
 input[type="button"],
 input[type="submit"] {
   width: 100%;
   padding: 10px;
   border: none;
-  border-radius: 10px;
   cursor: pointer;
 }

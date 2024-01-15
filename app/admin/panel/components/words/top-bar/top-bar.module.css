@@ -1,9 +1,9 @@
 .topBar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-  height: 40px;
   padding: 10px;
   border-bottom: 1px solid gainsboro;
 }
