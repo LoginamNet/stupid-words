@@ -6,7 +6,6 @@ import { cookies } from "next/headers";
 
 import Header from "./components/header/header";
 import Navigation from "./components/navigation/navigation";
-import { ToastContainer } from "react-toastify";
 
 import styles from "./layout.module.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,7 +34,6 @@ export default async function AdminLayout({
         <Header />
         <main className={styles.main}>
           <Navigation />
-          <ToastContainer />
           <div className={styles.content}>{children}</div>
         </main>
       </div>
