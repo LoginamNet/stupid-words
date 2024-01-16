@@ -1,0 +1,4 @@
+.navigation {
+  display: flex;
+  min-width: fit-content;
+}

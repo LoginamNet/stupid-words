@@ -1,0 +1,8 @@
+.link {
+  display: block;
+  padding: 10px;
+}
+
+.active_link {
+  color: orange;
+}

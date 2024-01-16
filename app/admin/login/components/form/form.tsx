@@ -38,7 +38,7 @@ export default function LoginForm() {
           render: "Связь с БД установлена!",
           type: "success",
           isLoading: false,
-          autoClose: 5000,
+          autoClose: 3000,
         });
 
         toast.success("Вход выполнен!", {
@@ -46,14 +46,14 @@ export default function LoginForm() {
             setCookie("sw_auth_token", data);
             router.replace("/admin/panel/actual");
           },
-          autoClose: 5000,
+          autoClose: 3000,
         });
       } else {
         toast.update(toastID, {
           render: "Связь с БД установлена!",
           type: "success",
           isLoading: false,
-          autoClose: 5000,
+          autoClose: 3000,
         });
 
         res.status === 409
@@ -69,7 +69,7 @@ export default function LoginForm() {
         render: "Ошибка при взаимодействии с БД!",
         type: "error",
         isLoading: false,
-        autoClose: 5000,
+        autoClose: 3000,
       });
     }
   };

@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 import { redirect } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
@@ -8,11 +6,6 @@ import Header from "./components/header/header";
 import Navigation from "./components/navigation/navigation";
 
 import styles from "./layout.module.css";
-
-export const metadata: Metadata = {
-  title: "Stupid Words",
-  description: "Some fun and stupid words",
-};
 
 export default async function AdminLayout({
   children,
