@@ -43,7 +43,6 @@ export default function LoginForm() {
 
         toast.success("Вход выполнен!", {
           onClose: () => {
-            console.log(123);
             setCookie("sw_auth_token", data);
             router.replace("/admin/panel/actual");
           },
